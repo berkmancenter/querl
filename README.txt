@@ -1,0 +1,1 @@
+This application is licensed under the GPL, version 3.
