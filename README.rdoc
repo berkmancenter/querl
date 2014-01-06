@@ -1,0 +1,8 @@
+== README
+
+This application is licensed under the GPL, version 3.
+
+Ruby 2.0.0
+Rails 4.0.1
+Postgres DB
+
