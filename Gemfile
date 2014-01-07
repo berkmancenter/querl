@@ -43,3 +43,15 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+gem 'therubyracer'
+gem 'devise'
+gem 'formtastic'
+gem 'will_paginate'
+gem 'pg'
+gem 'carrierwave'
+gem 'bootstrap-sass'
+gem 'formtastic-bootstrap'
+gem 'jquery-tablesorter'
+gem 'ckeditor'
+gem 'country_select'
