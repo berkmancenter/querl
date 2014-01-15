@@ -11,4 +11,10 @@ namespace :querl do
     puts "Admin username is: #{user.username}"
     puts "Admin password is: #{user.password}"
   end
+  
+  task :default_user_types => :environment do
+    UserType.create(:name => 'owner')
+    UserType.create(:name => 'coder')
+    puts "User Types Created!"
+  end
 end  
