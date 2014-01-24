@@ -1,9 +1,9 @@
 Querl::Application.routes.draw do
+  resources :user_roles
+
   resources :projects
 
   resources :surveys
-
-  resources :user_types
 
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
