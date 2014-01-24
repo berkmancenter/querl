@@ -1,4 +1,8 @@
 Querl::Application.routes.draw do
+  resources :projects
+
+  resources :surveys
+
   resources :user_types
 
   devise_for :users
