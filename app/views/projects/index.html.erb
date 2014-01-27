@@ -1,0 +1,23 @@
+<h1>Projects</h1>
+
+<div>
+  	<table id="projects-table" class="table table-condensed tablesorter">
+	<thead>
+	  <tr>
+		<th>Name</th>
+		<th>Actions</th>
+	  </tr>
+	</thead> 
+	<tbody>
+	    <% @projects.each do |project| %>
+	    	<tr>
+	  	  <td><%= project.name %></td>
+		  <td>
+	   		<%= link_to('Edit', edit_project_path(project), :class => "action-edit") %> | <%= link_to('Delete', project_path(project), :confirm => "Are you sure?", :method => :delete) %>
+		  </td>
+	    </tr>
+	    <% end %>
+	</tbody>	
+	</table>
+	
+</div>
