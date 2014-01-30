@@ -13,3 +13,8 @@
  */
 // import the CSS framework
 @import "bootstrap";
+
+ol {
+	list-style-type: none;
+	padding: 0px;
+}
