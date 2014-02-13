@@ -6,8 +6,15 @@
   <h2>Projects</h2>
   <p><%= link_to "Add New", new_project_path %>
   <p class="lead">Your Projects</p>
-  <% unless @projects.blank? %>
-    <%= render :partial => 'shared/project' %>	
+  <% unless @your_projects.nil? %>
+    <%= render :partial => 'shared/project', :locals => {:projects => @your_projects} %>	
+  <% else %>
+    <h3>No projects yet.</h3>
+  <% end %>
+  
+  <p class="lead">All Projects</p>
+  <% unless @all_projects.nil? %>
+    <%= render :partial => 'shared/project', :locals => {:projects => @all_projects} %>	
   <% else %>
     <h3>No projects yet.</h3>
   <% end %>

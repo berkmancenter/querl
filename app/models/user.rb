@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          
-  has_many :projects
-  has_many :user_roles, through: :projects
+  has_many :user_roles
+  has_many :projects, through: :user_roles
   
   ROLES = %w[owner coder]
 end
