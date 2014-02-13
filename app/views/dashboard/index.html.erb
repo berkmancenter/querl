@@ -4,7 +4,13 @@
 
 <div class="col-lg-6">
   <h2>Projects</h2>
+  <p><%= link_to "Add New", new_project_path %>
   <p class="lead">Your Projects</p>
+  <% unless @projects.blank? %>
+    <%= render :partial => 'shared/project' %>	
+  <% else %>
+    <h3>No projects yet.</h3>
+  <% end %>
 </div>
 
 <div class="col-lg-6">

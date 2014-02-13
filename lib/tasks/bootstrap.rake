@@ -12,14 +12,8 @@ namespace :querl do
     puts "User password is: #{user.password}"
   end
   
-  task :default_user_roles => :environment do
-    UserRole.create(:name => 'owner')
-    UserRole.create(:name => 'coder')
-    puts "User Roles Created!"
-  end
-  
   desc "run all tasks in bootstrap"
-  task :run_all => [:default_user, :default_user_roles] do
+  task :run_all => [:default_user] do
     puts "Ran all tasks!"
   end
 end  

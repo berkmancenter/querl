@@ -18,6 +18,7 @@ class ProjectsController < ApplicationController
   
   def create
     @project = Project.new(project_params)
+    @project.user_roles = [UserRole.create(:user_id => current_user.id, :name => "owner")]
     respond_to do |format|
       if @project.save
         format.html { redirect_to projects_url, notice: 'Project was successfully created.' }
@@ -31,7 +32,7 @@ class ProjectsController < ApplicationController
   
   def update
     @project = Project.find(params[:id])
-
+    
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to projects_url, notice: 'Project was successfully updated.' }
@@ -43,10 +44,16 @@ class ProjectsController < ApplicationController
     end
   end
   
+  def manage_users
+    
+  end
+  
   def destroy
     @project = Project.find(params[:id])
+    #@roles = ProjectUserUserRoles.find(:all, :conditions => {:project_id => @project.id})
     @project.destroy
-
+    #@roles.each{|role| role.destroy}
+    
     respond_to do |format|
       format.html { redirect_to projects_url }
       format.json { head :no_content }

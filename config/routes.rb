@@ -1,8 +1,11 @@
 Querl::Application.routes.draw do
   resources :user_roles
 
-  resources :projects
-
+  resources :projects do
+    collection do
+      get 'manage_users'
+    end
+  end
   resources :surveys
 
   devise_for :users
