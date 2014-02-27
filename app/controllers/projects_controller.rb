@@ -45,7 +45,7 @@ class ProjectsController < ApplicationController
   end
   
   def manage_users
-    
+    @current_users = @project.users
   end
   
   def destroy
