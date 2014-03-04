@@ -7,7 +7,7 @@
 	  <% projects.each do |project| %>
 	  <tr>
 	    <td><%= project.name %></td>
-	    <td><%= link_to 'Manage Users', manage_users_projects_path(:id => project.id) %> | <%= link_to 'Edit', edit_project_path(project) %> | <%= link_to('Delete', project_path(project), :confirm => "Are you sure?", :method => :delete) %></td>
+	    <td><%= link_to 'Show Users', show_users_projects_path(:id => project.id) %> | <%= link_to 'Edit', edit_project_path(project) %> | <%= link_to('Delete', project_path(project), :confirm => "Are you sure?", :method => :delete) %></td>
 	  </tr>
 	  <% end %>
   </table>

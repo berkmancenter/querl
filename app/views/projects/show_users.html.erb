@@ -11,8 +11,8 @@
 	  <% @current_users.each do |user| %>
 	  <tr>
 	    <td><%= user.username %></td>
-		<td><%= user.user_roles.first.name %></td>
-	    <td><%= link_to 'Remove from Project', manage_users_projects_path(:id => @project.id) %></td>
+		<td><%= user.user_roles.where(:project_id => @project.id)[0].name %></td>
+	    <td><%= link_to 'Remove from Project', remove_user_projects_path(:project_id => @project.id, :user_id => user.id), :confirm => "Are you sure?" %></td>
 	  </tr>
 	  <% end %>
     </table>
@@ -30,7 +30,7 @@
 	  <% @all_users.each do |user| %>
 	  <tr>
 	    <td><%= user.username %></td>
-	    <td><%= link_to 'Add as Owner', manage_users_projects_path(:id => @project.id) %></td> | <td><%= link_to 'Add as Coder', manage_users_projects_path(:id => @project.id) %></td>
+	    <td><%= link_to 'Add as Owner', add_owner_projects_path(:project_id => @project.id, :user_id => user.id) %> | <%= link_to 'Add as Coder', add_coder_projects_path(:project_id => @project.id, :user_id => user.id) %></td>
 	  </tr>
 	  <% end %>
     </table>

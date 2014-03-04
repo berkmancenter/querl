@@ -44,8 +44,31 @@ class ProjectsController < ApplicationController
     end
   end
   
-  def manage_users
+  def show_users
     @current_users = @project.users
+    @all_users = User.all
+  end
+  
+  def remove_user
+    @project = Project.find(params[:project_id])
+    @user = User.find(params[:user_id])
+    @role = UserRole.find(:first, :conditions => {:project_id => @project.id, :user_id => @user.id})
+    @role.destroy
+    redirect_to show_users_projects_url(:id => @project.id)
+  end
+  
+  def add_owner
+    @project = Project.find(params[:project_id])
+    @user = User.find(params[:user_id])
+    @project.user_roles << [UserRole.create(:user_id => @user.id, :name => "owner")]
+    redirect_to show_users_projects_url(:id => @project.id)
+  end
+  
+  def add_coder
+    @project = Project.find(params[:project_id])
+    @user = User.find(params[:user_id])
+    @project.user_roles << [UserRole.create(:user_id => @user.id, :name => "coder")]
+    redirect_to show_users_projects_url(:id => @project.id)
   end
   
   def destroy

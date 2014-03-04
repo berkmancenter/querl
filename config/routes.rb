@@ -3,7 +3,10 @@ Querl::Application.routes.draw do
 
   resources :projects do
     collection do
-      get 'manage_users'
+      get 'show_users'
+      get 'remove_user'
+      get 'add_owner'
+      get 'add_coder'
     end
   end
   resources :surveys
