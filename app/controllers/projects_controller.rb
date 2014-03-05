@@ -21,7 +21,7 @@ class ProjectsController < ApplicationController
     @project.user_roles = [UserRole.create(:user_id => current_user.id, :name => "owner")]
     respond_to do |format|
       if @project.save
-        format.html { redirect_to projects_url, notice: 'Project was successfully created.' }
+        format.html { redirect_to root_url, notice: 'Project was successfully created.' }
         format.json { render json: @project, status: :created, author: @project }
       else
         format.html { render action: "new" }
@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
     
     respond_to do |format|
       if @project.update_attributes(params[:project])
-        format.html { redirect_to projects_url, notice: 'Project was successfully updated.' }
+        format.html { redirect_to root_url, notice: 'Project was successfully updated.' }
         format.json { head :no_content }  
       else
         format.html { render action: "edit" }
@@ -78,7 +78,7 @@ class ProjectsController < ApplicationController
     #@roles.each{|role| role.destroy}
     
     respond_to do |format|
-      format.html { redirect_to projects_url }
+      format.html { redirect_to root_url }
       format.json { head :no_content }
     end
   end

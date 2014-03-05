@@ -8,4 +8,8 @@ class User < ActiveRecord::Base
   has_many :projects, through: :user_roles
   
   ROLES = %w[owner coder]
+  
+  def get_role(project)
+    self.user_roles.where(:project_id => project.id)[0].name
+  end 
 end
