@@ -1,4 +1,6 @@
 Querl::Application.routes.draw do
+  resources :survey_items
+
   resources :user_roles
 
   resources :projects do

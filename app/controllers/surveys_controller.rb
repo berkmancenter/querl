@@ -6,6 +6,7 @@ class SurveysController < ApplicationController
   end
   
   def show
+    @survey_items = SurveyItem.all
   end  
   
   def new
