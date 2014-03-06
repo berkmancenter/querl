@@ -1,7 +1,8 @@
-<%= semantic_form_for @project, :html => { :class => "form-horizontal"} do |f| %>
+<%= semantic_form_for @survey, :html => { :class => "form-horizontal"} do |f| %>
   <fieldset>
-    <legend><%= @project.name %></legend>	    
+    <legend><%= @survey.name %></legend>	    
 		<%= f.inputs do %>
+		  <%= f.input :project_id, :as => :hidden, :input_html => { :value => @project.id} %>
 		  <div class="form-group"> 
 		    <label for="name" class="col-lg-2 control-label">Name</label>
 		    <div class="col-lg-10">

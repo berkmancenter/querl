@@ -6,6 +6,7 @@ class ProjectsController < ApplicationController
   end
   
   def show
+    @surveys = @project.surveys
   end  
   
   def new
@@ -73,9 +74,9 @@ class ProjectsController < ApplicationController
   
   def destroy
     @project = Project.find(params[:id])
-    #@roles = ProjectUserUserRoles.find(:all, :conditions => {:project_id => @project.id})
+    @roles = ProjectUserUserRoles.find(:all, :conditions => {:project_id => @project.id})
     @project.destroy
-    #@roles.each{|role| role.destroy}
+    @roles.each{|role| role.destroy}
     
     respond_to do |format|
       format.html { redirect_to root_url }
