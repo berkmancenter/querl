@@ -9,6 +9,7 @@ class SurveyItemsController < ApplicationController
   end  
   
   def new
+    @survey = Survey.find(params[:survey_id])
     @survey_item = SurveyItem.new
   end
   
