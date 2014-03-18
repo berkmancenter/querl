@@ -1,7 +1,29 @@
 <h1><%= @survey.name %></h1>
 <div class="col-lg-6">
   <h2>Current Survey Items</h2>
-  <p><%= link_to "Create New Survey Item", new_survey_item_path(:survey_id => @survey.id) %></p>
+  <p>Survey Items that are included in this Survey.</p>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover ">
+	  <tr>
+	    <th>Name</th>
+		<th>Description</th>
+		<th>Actions</th>
+	  </tr>
+	  <% @current_items.each do |item| %>
+	  <tr>
+	    <td><%= item.field_name %></td>
+		<td><%= item.field_type %></td>
+	    <td></td>
+	  </tr>
+	  <% end %>
+    </table>
+  </div>
+  
+</div>
+
+<div class="col-lg-6">
+  <h2>All Survey Items</h2>
+  <p><%= link_to "Create New Survey Item", new_survey_item_path %></p>
   <div class="table-responsive">
     <table class="table table-striped table-hover ">
 	  <tr>
@@ -13,7 +35,7 @@
 	  <tr>
 	    <td><%= item.field_name %></td>
 		<td><%= item.field_type %></td>
-	    <td></td>
+	    <td><%= link_to 'Edit', edit_survey_item_path(item) %></td>
 	  </tr>
 	  <% end %>
     </table>

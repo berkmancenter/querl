@@ -4,7 +4,7 @@
 
 <div class="col-lg-6">
   <h2>Projects</h2>
-  <p><%= link_to "Add New", new_project_path %>
+  <p><%= link_to "Add New", new_project_path %></p>
   <p class="lead">Your Projects</p>
   <% unless @your_projects.nil? %>
     <%= render :partial => 'shared/project', :locals => {:projects => @your_projects} %>	
@@ -23,4 +23,7 @@
 <div class="col-lg-6">
   <h2>Target Lists</h2>
   <p class="lead">Your Target Lists</p>
+  
+  <h2>Survey Items</h2>
+  <p><%= link_to "Add New", new_survey_item_path %> | <%= link_to "View All", survey_items_path %></p>
 </div>

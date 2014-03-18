@@ -1,7 +1,8 @@
 class SurveyItemsController < ApplicationController
+  load_and_authorize_resource
   
   def index
-    
+    @survey_items = SurveyItem.all
   end
   
   def show
@@ -9,12 +10,11 @@ class SurveyItemsController < ApplicationController
   end  
   
   def new
-    @survey = Survey.find(params[:survey_id])
     @survey_item = SurveyItem.new
   end
   
   def edit
-    
+    #@survey_item = SurveyItem.find(params[:id])
   end
   
   def create
@@ -56,7 +56,7 @@ class SurveyItemsController < ApplicationController
   
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_survey
+    def set_survey_item
       @survey_item = SurveyItem.find(params[:id])
     end
 
