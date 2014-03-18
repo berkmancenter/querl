@@ -1,5 +1,9 @@
 Querl::Application.routes.draw do
-  resources :survey_items
+  resources :survey_items do
+    collection do
+      get 'add_to_survey'
+    end
+  end
 
   resources :user_roles
 

@@ -37,7 +37,11 @@ class SurveysController < ApplicationController
     
     respond_to do |format|
       if @survey.update_attributes(params[:survey])
-        format.html { redirect_to root_url, notice: 'Survey was successfully updated.' }
+        unless params[:survey_id].nil?
+          format.html { redirect_to survey_url(Survey.find(params[:id].to_i)), notice: 'Survey was successfully updated.' }
+        else  
+          format.html { redirect_to root_url, notice: 'Survey was successfully updated.' }
+        end  
         format.json { head :no_content }  
       else
         format.html { render action: "edit" }

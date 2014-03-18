@@ -54,6 +54,11 @@ class SurveyItemsController < ApplicationController
     end
   end
   
+  def add_to_survey
+    @survey = Survey.find(params[:survey_id])
+    #@survey_item = SurveyItem.find(params[:id])
+  end  
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_survey_item
