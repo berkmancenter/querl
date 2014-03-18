@@ -1,4 +1,6 @@
 Querl::Application.routes.draw do
+  resources :responses
+
   resources :survey_items do
     collection do
       get 'add_to_survey'
@@ -15,7 +17,11 @@ Querl::Application.routes.draw do
       get 'add_coder'
     end
   end
-  resources :surveys
+  resources :surveys do
+    collection do
+      get 'gather_response'
+    end
+  end
 
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.

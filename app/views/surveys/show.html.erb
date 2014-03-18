@@ -1,4 +1,6 @@
 <h1><%= @survey.project.name %>: <%= @survey.name %></h1>
+
+<% if @project.get_role(current_user) == 'owner' %>		
 <div class="col-lg-6">
   <h2>Current Survey Items</h2>
   <p>Survey Items that are included in this Survey.</p>
@@ -18,7 +20,6 @@
 	  <% end %>
     </table>
   </div>
-  
 </div>
 
 <div class="col-lg-6">
@@ -46,4 +47,37 @@
     </div>
   </div>
 </div>
+<% elsif @project.get_role(current_user) == 'coder' %>
+Yay you are a coder!
 
+  <%= semantic_form_for :gather_response, :html => { :class => "form-horizontal", :method => :get } do |f| %>
+  <fieldset>
+    <legend><%= @survey.name %></legend>	    
+	  <%= f.inputs do %>
+  	    <% @current_items.each do |item| %>
+  		  <% if item.field_type == "Label" %>
+  		    <p><%= raw item.display_text %></p>
+  		  <% else %>
+			<%= f.semantic_fields_for "#{item.field_name}", :html => { :method => :get } do |fi| %>
+			  <%= fi.input :survey_item_id, :as => :hidden, :input_html => { :value => item.id } %>	
+			  <%= fi.input :survey_id, :as => :hidden, :input_html => { :value => @survey.id } %>  
+	  	      <%= fi.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+	  		  <div class="form-group"> 
+	  		    <label for="name" class="col-lg-2 control-label"><%= item.display_text.html_safe %></label>
+	  		    <div class="col-lg-10">
+				  <%= fi.input :response_text, :as => item.formtastic_field_map, :label => false , :collection => item.field_options.nil? ? '' : item.field_options.split(','), :input_html => { :class => "form-control"} %>	
+	  		    </div>	
+	  		  </div>  
+		    <% end %>
+		  <% end %>
+		<% end %>
+	  <% end %>	
+	  <%= f.actions do %>
+	    <%= f.action :submit, :as => :button, :button_html => { :class => "btn btn-primary"} %>
+	  <% end %>
+  </fieldset>	
+  <% end %>
+
+<% else %>
+  You are not associated with this project.
+<% end %>

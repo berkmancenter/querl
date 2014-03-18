@@ -6,8 +6,13 @@ class SurveysController < ApplicationController
   end
   
   def show
+    @project = @survey.project
     @survey_items = SurveyItem.all
     @current_items = @survey.survey_items
+    
+    unless params[:gather_response].nil?
+      redirect_to gather_response_surveys_url(:answers => params[:gather_response])
+    end
   end  
   
   def new
@@ -59,6 +64,15 @@ class SurveysController < ApplicationController
       format.html { redirect_to project_url(@project) }
       format.json { head :no_content }
     end
+  end
+  
+  def gather_response
+    p "in here"
+    params[:answers].each_value do |value|
+      response = Response.create(value)
+    end  
+    
+    redirect_to root_url, notice: 'Response was successfully recorded.'
   end
   
   private
