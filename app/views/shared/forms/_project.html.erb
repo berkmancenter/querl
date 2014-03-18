@@ -1,0 +1,22 @@
+<%= semantic_form_for @project, :html => { :class => "form-horizontal"} do |f| %>
+  <fieldset>
+    <legend><%= @project.name %></legend>	    
+		<%= f.inputs do %>
+		  <div class="form-group"> 
+		    <label for="name" class="col-lg-2 control-label">Name</label>
+		    <div class="col-lg-10">
+		      <%= f.input :name, :label => false, :input_html => { :class => "form-control"} %>
+		    </div>	
+		  </div>
+		  <div class="form-group">
+		    <label for="description" class="col-lg-2 control-label">Description</label>
+		    <div class="col-lg-10">
+		      <%= f.input :description, :label => false, :input_html => { :class => "form-control"} %>
+	        </div>
+		  </div>
+		<% end %>
+		<%= f.actions do %>
+		  <%= f.action :submit, :as => :button, :button_html => { :class => "btn btn-primary"} %>
+		<% end %>
+  </fieldset>	
+<% end %>

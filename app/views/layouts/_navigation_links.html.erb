@@ -1,0 +1,8 @@
+<%# add navigation links to this file %>
+  <li><%= link_to 'Dashboard', root_path %></li>
+<% if current_user.nil? %>
+  <li><%= link_to "Sign In/Sign Up", new_user_session_path %></li>
+<% else %>  
+  <li><%= link_to "Edit Account", edit_user_registration_path %></li>
+  <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
+<% end %>

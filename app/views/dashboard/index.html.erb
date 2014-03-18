@@ -1,0 +1,26 @@
+<div class="col-lg-12">
+  <h1>Dashboard</h1>
+</div>
+
+<div class="col-lg-6">
+  <h2>Projects</h2>
+  <p><%= link_to "Add New", new_project_path %>
+  <p class="lead">Your Projects</p>
+  <% unless @your_projects.nil? %>
+    <%= render :partial => 'shared/project', :locals => {:projects => @your_projects} %>	
+  <% else %>
+    <h3>No projects yet.</h3>
+  <% end %>
+  
+  <p class="lead">All Projects</p>
+  <% unless @all_projects.nil? %>
+    <%= render :partial => 'shared/project', :locals => {:projects => @all_projects} %>	
+  <% else %>
+    <h3>No projects yet.</h3>
+  <% end %>
+</div>
+
+<div class="col-lg-6">
+  <h2>Target Lists</h2>
+  <p class="lead">Your Target Lists</p>
+</div>

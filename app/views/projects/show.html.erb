@@ -1,0 +1,22 @@
+<h1><%= @project.name %></h1>
+<div class="col-lg-6">
+  <h2>Current Surveys</h2>	
+  <p> <%= link_to "Create new survey", new_survey_path(:project_id => @project.id) %> </p>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover ">
+	  <tr>
+	    <th>Name</th>
+		<th>Description</th>
+		<th>Actions</th>
+	  </tr>
+	  <% @surveys.each do |survey| %>
+	  <tr>
+	    <td><%= survey.name %></td>
+		<td><%= survey.description %></td>
+	    <td><%= link_to 'View', survey_path(survey) %> | <%= link_to 'Edit', edit_survey_path(survey, :project_id => @project.id) %> | <%= link_to('Delete', survey_path(survey), :confirm => "Are you sure?", :method => :delete) %></td>
+	  </tr>
+	  <% end %>
+    </table>
+  </div> 
+</div>
+
