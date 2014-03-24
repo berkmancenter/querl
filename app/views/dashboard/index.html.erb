@@ -3,27 +3,20 @@
 </div>
 
 <div class="col-lg-6">
-  <h2>Projects</h2>
-  <p><%= link_to "Add New", new_project_path %></p>
-  <p class="lead">Your Projects</p>
+  <h2>Your Projects</h2>
   <% unless @your_projects.nil? %>
     <%= render :partial => 'shared/project', :locals => {:projects => @your_projects} %>	
   <% else %>
     <h3>No projects yet.</h3>
   <% end %>
-  
-  <p class="lead">All Projects</p>
+  <p><%= link_to "Add New Project", new_project_path %></p>
+</div>
+
+<div class="col-lg-6">
+  <h2>All Projects</h2>
   <% unless @all_projects.nil? %>
     <%= render :partial => 'shared/project', :locals => {:projects => @all_projects} %>	
   <% else %>
     <h3>No projects yet.</h3>
   <% end %>
-</div>
-
-<div class="col-lg-6">
-  <h2>Target Lists</h2>
-  <p class="lead">Your Target Lists</p>
-  
-  <h2>Survey Items</h2>
-  <p><%= link_to "Add New", new_survey_item_path %> | <%= link_to "View All", survey_items_path %></p>
 </div>

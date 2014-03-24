@@ -24,7 +24,7 @@
 
 <div class="col-lg-6">
   <h2>All Survey Items</h2>
-  <p><%= link_to "Create New Survey Item", new_survey_item_path %></p>
+  <p><%= link_to "Create New Survey Item", new_survey_item_path(:project_id => @survey.project.id) %></p>
   <div class="row">
     <div class="well"> 
       <%= semantic_form_for @survey, :html => { :class => "form-horizontal"} do |f| %>

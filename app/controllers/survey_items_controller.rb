@@ -10,6 +10,7 @@ class SurveyItemsController < ApplicationController
   end  
   
   def new
+    @project = Project.find(params[:project_id])
     @survey_item = SurveyItem.new
   end
   

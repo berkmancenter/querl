@@ -2,6 +2,7 @@
   <fieldset>
     <legend>New Survey Item</legend>	    
 		<%= f.inputs do %>
+		  <%= f.input :project_id, :as => :hidden, :input_html => { :value => @project.id} %>
 		  <div class="form-group"> 
 		    <label for="name" class="col-lg-2 control-label">Field Name</label>
 		    <div class="col-lg-10">

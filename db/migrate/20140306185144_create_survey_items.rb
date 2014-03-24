@@ -6,6 +6,7 @@ class CreateSurveyItems < ActiveRecord::Migration
       t.string :field_type, :null => false
       t.string :field_options
       t.boolean :required, :default => false
+      t.references :project, :null => false
       t.timestamps
     end
     

@@ -2,6 +2,7 @@ class SurveyItem < ActiveRecord::Base
   
   has_and_belongs_to_many :surveys
   has_many :responses
+  belongs_to :project
   
   validates_presence_of :field_name, :field_type
   validates_uniqueness_of :field_name
