@@ -1,0 +1,24 @@
+<h2>Previewing Survey Item</h2>
+
+<% if @survey_item.field_type == "Label" %>
+  <%= raw @survey_item.display_text %><br />
+<% else %>
+  <%= semantic_form_for :test, :html => { :class => "form-horizontal"} do |f| %>
+    <fieldset>
+      <legend>Survey Item</legend>	    
+		<%= f.inputs do %>
+		  <div class="form-group"> 
+		    <label for="name" class="col-lg-2 control-label"><%= @survey_item.display_text %></label>
+		    <div class="col-lg-10">
+		      <%= f.input @survey_item.field_name, :as => @survey_item.formtastic_field_map, :label => false, :collection => @survey_item.field_options.nil? ? '' : @survey_item.field_options.split(',') %>
+		    </div>	
+		  </div>
+		<% end %>
+    </fieldset>
+  <% end %>
+<% end %>
+<% if !@project.nil? %>
+  <%= button_to "Return to Project", project_path(@project), :method => :get, :class => "btn btn-primary" %>
+<% elsif !@survey.nil? %>
+  <%= button_to "Return to Survey", survey_path(@survey), :method => :get, :class => "btn btn-primary"  %>
+<% end %> 

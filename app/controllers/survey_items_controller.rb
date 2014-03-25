@@ -6,7 +6,8 @@ class SurveyItemsController < ApplicationController
   end
   
   def show
-    
+    @project = Project.find(params[:project_id]) unless params[:project_id].nil?
+    @survey = Survey.find(params[:survey_id]) unless params[:survey_id].nil?
   end  
   
   def new
@@ -15,6 +16,7 @@ class SurveyItemsController < ApplicationController
   end
   
   def edit
+    @project = @survey_item.project
     #@survey_item = SurveyItem.find(params[:id])
   end
   
@@ -22,7 +24,7 @@ class SurveyItemsController < ApplicationController
     @survey_item = SurveyItem.new(survey_item_params)
     respond_to do |format|
       if @survey_item.save
-        format.html { redirect_to root_url, notice: 'Survey Item was successfully created.' }
+        format.html { redirect_to project_url(@survey_item.project), notice: 'Survey Item was successfully created.' }
         format.json { render json: @survey_item, status: :created, author: @survey_item }
       else
         format.html { render action: "new" }
@@ -36,7 +38,7 @@ class SurveyItemsController < ApplicationController
     
     respond_to do |format|
       if @survey_item.update_attributes(params[:survey_item])
-        format.html { redirect_to root_url, notice: 'Survey Item was successfully updated.' }
+        format.html { redirect_to project_url(@survey_item.project), notice: 'Survey Item was successfully updated.' }
         format.json { head :no_content }  
       else
         format.html { render action: "edit" }
