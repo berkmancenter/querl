@@ -15,7 +15,7 @@
 	  <tr>
 	    <td><%= item.field_name %></td>
 		<td><%= item.field_type %></td>
-	    <td></td>
+	    <td><%= link_to "Remove from Survey", remove_survey_item_surveys_path(:survey_id => @survey.id, :survey_item_id => item.id)%></td>
 	  </tr>
 	  <% end %>
     </table>

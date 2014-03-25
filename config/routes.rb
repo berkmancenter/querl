@@ -20,6 +20,7 @@ Querl::Application.routes.draw do
   resources :surveys do
     collection do
       get 'gather_response'
+      get 'remove_survey_item'
     end
   end
 

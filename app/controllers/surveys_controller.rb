@@ -67,12 +67,19 @@ class SurveysController < ApplicationController
   end
   
   def gather_response
-    p "in here"
     params[:answers].each_value do |value|
       response = Response.create(value)
     end  
-    
     redirect_to root_url, notice: 'Response was successfully recorded.'
+  end
+  
+  def remove_survey_item
+    @survey = Survey.find(params[:survey_id])
+    @item_to_remove = SurveyItem.find(params[:survey_item_id])
+    @current_survey_items = @survey.survey_items
+    @survey.survey_items = @current_survey_items.delete_if {|item| item.id == @item_to_remove.id }
+    
+    redirect_to survey_url(@survey), notice: 'Survey item was removed.'
   end
   
   private
