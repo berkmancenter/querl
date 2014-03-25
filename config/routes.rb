@@ -21,6 +21,7 @@ Querl::Application.routes.draw do
     collection do
       get 'gather_response'
       get 'remove_survey_item'
+      get 'preview'
     end
   end
 

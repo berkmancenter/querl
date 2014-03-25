@@ -82,6 +82,12 @@ class SurveysController < ApplicationController
     redirect_to survey_url(@survey), notice: 'Survey item was removed.'
   end
   
+  def preview
+    @project = @survey.project
+    @current_items = @survey.survey_items
+    
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_survey
