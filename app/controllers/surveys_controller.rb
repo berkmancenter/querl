@@ -39,9 +39,22 @@ class SurveysController < ApplicationController
   
   def update
     @survey = Survey.find(params[:id])
-    
+    unless params[:survey][:survey_item_ids].nil?
+      all_items = SurveyItemsSurveys.all(:conditions => {:survey_id => @survey.id})
+    end
     respond_to do |format|
       if @survey.update_attributes(params[:survey])
+        unless params[:survey][:survey_item_ids].nil?
+          nil_items = SurveyItemsSurveys.all(:conditions => {:survey_id => @survey.id, :position => nil})
+          i = 0
+          pos = all_items.last.position + 1
+          while i < nil_items.length  do
+             nil_items[i].position = pos
+             nil_items[i].save
+             i +=1
+             pos +=1
+          end 
+        end
         unless params[:survey_id].nil?
           format.html { redirect_to survey_url(Survey.find(params[:id].to_i)), notice: 'Survey was successfully updated.' }
         else  
@@ -86,6 +99,18 @@ class SurveysController < ApplicationController
     @project = @survey.project
     @current_items = @survey.survey_items
     
+  end
+  
+  def move
+    survey = Survey.find(params[:survey_id])
+    survey_items_surveys_item = SurveyItemsSurveys.first(:conditions => {:survey_id => survey.id, :survey_item_id => params[:survey_item_id]})
+    if ["increment_position", "decrement_position", "move_to_top", "move_to_bottom", "remove_from_list"].include?(params[:method]) and !survey_items_surveys_item.nil?
+      survey_items_surveys_item.send(params[:method])
+      if params[:method] == "remove_from_list"
+        survey.survey_items = survey.survey_items.delete_if {|item| item.id == params[:survey_item_id].to_i }
+      end  
+    end
+    redirect_to survey_url(survey)#, notice: 'Survey item was repositioned.'
   end
   
   private

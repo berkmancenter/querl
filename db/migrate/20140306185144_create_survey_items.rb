@@ -10,10 +10,10 @@ class CreateSurveyItems < ActiveRecord::Migration
       t.timestamps
     end
     
-    create_table(:survey_items_surveys, :id => false) do|t|
+    create_table(:survey_items_surveys) do |t|
       t.references :survey_item
       t.references :survey
-      t.integer :survey_item_position, :null => false, :default => 0
+      t.integer :position, :default => 0
     end
     
     [:field_name, :display_text, :field_type, :field_options].each do|col|

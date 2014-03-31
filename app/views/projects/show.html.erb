@@ -41,7 +41,7 @@
 	    <td><%= item.field_name %></td>
 		<td><%= item.display_text %></td>
 		<% if @project.get_role(current_user) == 'owner' %>
-	      <td><%= link_to('View', survey_item_path(item, :project_id => @project.id), :class => "action-view") %> | <%= link_to('Edit', edit_survey_item_path(item), :class => "action-edit") %> | <%= link_to('Delete', survey_item_path(item), :confirm => "Are you sure?", :method => :delete) %></td>
+	      <td><%= link_to('Preview', survey_item_path(item, :project_id => @project.id), :class => "action-view") %> | <%= link_to('Edit', edit_survey_item_path(item), :class => "action-edit") %> | <%= link_to('Delete', survey_item_path(item), :confirm => "Are you sure?", :method => :delete) %></td>
 		<% else %>
 		  <td>You are not associated with this project.</td>
 		<% end %>
