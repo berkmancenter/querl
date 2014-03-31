@@ -6,11 +6,11 @@
 	  </tr>
 	  <% projects.each do |project| %>
 	  <tr>
-	    <td><%= link_to project.name, project_path(project) %></td>
+	    <td><%= project.name %></td>
 		<% if project.get_role(current_user) == 'owner' %>
-	      <td><%= link_to 'Show Users', show_users_projects_path(:id => project.id) %> | <%= link_to 'Edit', edit_project_path(project) %> | <%= link_to('Delete', project_path(project), :confirm => "Are you sure?", :method => :delete) %></td>
+	      <td><%= link_to 'Show Users', show_users_projects_path(:id => project.id) %> | <%= link_to 'View Surveys', project_path(project) %> | <%= link_to 'Edit', edit_project_path(project) %> | <%= link_to('Delete', project_path(project), :confirm => "Are you sure?", :method => :delete) %></td>
 		<% elsif project.get_role(current_user) == 'coder' %>
-		  <td><%= link_to 'Begin Coding' %></td>
+		  <td><%= link_to 'View Surveys', project_path(project) %></td>
 		<% else %>
 		  <td>You are not associated with this project.</td>
 		<% end %>  

@@ -6,7 +6,13 @@ class SurveysController < ApplicationController
   end
   
   def show
+    @project = @survey.project
     @survey_items = SurveyItem.all
+    @current_items = @survey.survey_items
+    
+    unless params[:gather_response].nil?
+      redirect_to gather_response_surveys_url(:answers => params[:gather_response])
+    end
   end  
   
   def new
@@ -33,10 +39,27 @@ class SurveysController < ApplicationController
   
   def update
     @survey = Survey.find(params[:id])
-    
+    unless params[:survey][:survey_item_ids].nil?
+      all_items = SurveyItemsSurveys.all(:conditions => {:survey_id => @survey.id})
+    end
     respond_to do |format|
       if @survey.update_attributes(params[:survey])
-        format.html { redirect_to root_url, notice: 'Survey was successfully updated.' }
+        unless params[:survey][:survey_item_ids].nil?
+          nil_items = SurveyItemsSurveys.all(:conditions => {:survey_id => @survey.id, :position => nil})
+          i = 0
+          pos = all_items.last.position + 1
+          while i < nil_items.length  do
+             nil_items[i].position = pos
+             nil_items[i].save
+             i +=1
+             pos +=1
+          end 
+        end
+        unless params[:survey_id].nil?
+          format.html { redirect_to survey_url(Survey.find(params[:id].to_i)), notice: 'Survey was successfully updated.' }
+        else  
+          format.html { redirect_to root_url, notice: 'Survey was successfully updated.' }
+        end  
         format.json { head :no_content }  
       else
         format.html { render action: "edit" }
@@ -54,6 +77,40 @@ class SurveysController < ApplicationController
       format.html { redirect_to project_url(@project) }
       format.json { head :no_content }
     end
+  end
+  
+  def gather_response
+    params[:answers].each_value do |value|
+      response = Response.create(value)
+    end  
+    redirect_to root_url, notice: 'Response was successfully recorded.'
+  end
+  
+  def remove_survey_item
+    @survey = Survey.find(params[:survey_id])
+    @item_to_remove = SurveyItem.find(params[:survey_item_id])
+    @current_survey_items = @survey.survey_items
+    @survey.survey_items = @current_survey_items.delete_if {|item| item.id == @item_to_remove.id }
+    
+    redirect_to survey_url(@survey), notice: 'Survey item was removed.'
+  end
+  
+  def preview
+    @project = @survey.project
+    @current_items = @survey.survey_items
+    
+  end
+  
+  def move
+    survey = Survey.find(params[:survey_id])
+    survey_items_surveys_item = SurveyItemsSurveys.first(:conditions => {:survey_id => survey.id, :survey_item_id => params[:survey_item_id]})
+    if ["increment_position", "decrement_position", "move_to_top", "move_to_bottom", "remove_from_list"].include?(params[:method]) and !survey_items_surveys_item.nil?
+      survey_items_surveys_item.send(params[:method])
+      if params[:method] == "remove_from_list"
+        survey.survey_items = survey.survey_items.delete_if {|item| item.id == params[:survey_item_id].to_i }
+      end  
+    end
+    redirect_to survey_url(survey)#, notice: 'Survey item was repositioned.'
   end
   
   private

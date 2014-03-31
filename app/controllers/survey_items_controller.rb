@@ -1,27 +1,30 @@
 class SurveyItemsController < ApplicationController
+  load_and_authorize_resource
   
   def index
-    
+    @survey_items = SurveyItem.all
   end
   
   def show
-    
+    @project = Project.find(params[:project_id]) unless params[:project_id].nil?
+    @survey = Survey.find(params[:survey_id]) unless params[:survey_id].nil?
   end  
   
   def new
-    @survey = Survey.find(params[:survey_id])
+    @project = Project.find(params[:project_id])
     @survey_item = SurveyItem.new
   end
   
   def edit
-    
+    @project = @survey_item.project
+    #@survey_item = SurveyItem.find(params[:id])
   end
   
   def create
     @survey_item = SurveyItem.new(survey_item_params)
     respond_to do |format|
       if @survey_item.save
-        format.html { redirect_to root_url, notice: 'Survey Item was successfully created.' }
+        format.html { redirect_to project_url(@survey_item.project), notice: 'Survey Item was successfully created.' }
         format.json { render json: @survey_item, status: :created, author: @survey_item }
       else
         format.html { render action: "new" }
@@ -35,7 +38,7 @@ class SurveyItemsController < ApplicationController
     
     respond_to do |format|
       if @survey_item.update_attributes(params[:survey_item])
-        format.html { redirect_to root_url, notice: 'Survey Item was successfully updated.' }
+        format.html { redirect_to project_url(@survey_item.project), notice: 'Survey Item was successfully updated.' }
         format.json { head :no_content }  
       else
         format.html { render action: "edit" }
@@ -54,9 +57,14 @@ class SurveyItemsController < ApplicationController
     end
   end
   
+  def add_to_survey
+    @survey = Survey.find(params[:survey_id])
+    #@survey_item = SurveyItem.find(params[:id])
+  end  
+  
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_survey
+    def set_survey_item
       @survey_item = SurveyItem.find(params[:id])
     end
 

@@ -1,0 +1,23 @@
+<h1>Survey Items</h1>
+
+<div>
+  	<table id="projects-table" class="table table-condensed tablesorter">
+	<thead>
+	  <tr>
+		<th>Field Name</th>
+		<th>Actions</th>
+	  </tr>
+	</thead> 
+	<tbody>
+	    <% @survey_items.each do |item| %>
+	    	<tr>
+	  	  <td><%= item.field_name %></td>
+		  <td>
+	   		<%= link_to('Edit', edit_survey_item_path(item), :class => "action-edit") %> | <%= link_to('Delete', survey_item_path(item), :confirm => "Are you sure?", :method => :delete) %>
+		  </td>
+	    </tr>
+	    <% end %>
+	</tbody>	
+	</table>
+	
+</div>

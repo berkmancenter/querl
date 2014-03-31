@@ -8,8 +8,8 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
  *= require_tree .
+ *= require_self
  */
 // import the CSS framework
 @import "bootstrap";
@@ -18,3 +18,12 @@ ol {
 	list-style-type: none;
 	padding: 0px;
 }
+
+.navbar {
+	position: relative;
+}
+
+.page-header {
+	margin-top: 22px;
+}
+

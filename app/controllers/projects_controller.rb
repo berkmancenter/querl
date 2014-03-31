@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   
   def show
     @surveys = @project.surveys
+    @survey_items = @project.survey_items
   end  
   
   def new

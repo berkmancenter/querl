@@ -1,23 +1,87 @@
-<h1><%= @survey.name %></h1>
+<% breadcrumb :survey, @survey %>
+
+<h1><%= @project.name %>: <%= @survey.name %></h1>
+
+<% if @project.get_role(current_user) == 'owner' %>		
 <div class="col-lg-6">
   <h2>Current Survey Items</h2>
-  <p><%= link_to "Create New Survey Item", new_survey_item_path(:survey_id => @survey.id) %></p>
+  <p>Survey Items that are included in this Survey.</p>
   <div class="table-responsive">
     <table class="table table-striped table-hover ">
 	  <tr>
+		<th></th>
 	    <th>Name</th>
 		<th>Description</th>
 		<th>Actions</th>
 	  </tr>
-	  <% @survey_items.each do |item| %>
+	  <% @current_items.each do |item| %>
 	  <tr>
+		  <td><%= link_to "&#8593;".html_safe, move_surveys_path(:method => 'decrement_position', :survey_id => @survey.id, :survey_item_id => item.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "&#8595;".html_safe, move_surveys_path(:method => 'increment_position', :survey_id => @survey.id, :survey_item_id => item.id) %> </td>
 	    <td><%= item.field_name %></td>
 		<td><%= item.field_type %></td>
-	    <td></td>
+	    <td><%= link_to "Move to Top", move_surveys_path(:method => 'move_to_top', :survey_id => @survey.id, :survey_item_id => item.id)%> | <%= link_to "Move to Bottom", move_surveys_path(:method => 'move_to_bottom', :survey_id => @survey.id, :survey_item_id => item.id) %> | <%= link_to "Remove", move_surveys_path(:method => 'remove_from_list', :survey_id => @survey.id, :survey_item_id => item.id) %></td>
 	  </tr>
 	  <% end %>
     </table>
   </div>
-  
 </div>
 
+<div class="col-lg-6">
+  <h2>All Survey Items</h2>
+  <p><%= link_to "Create New Survey Item", new_survey_item_path(:project_id => @survey.project.id) %></p>
+  <div class="row">
+    <div class="well"> 
+      <%= semantic_form_for @survey, :html => { :class => "form-horizontal"} do |f| %>
+        <%= hidden_field :survey_id, @survey.id %>
+		<fieldset>
+          <legend>Manage Survey Items for <%= @survey.name %></legend>	    
+  		  <%= f.inputs do %>
+  		    <div class="form-group"> 
+  		      <label for="name" class="col-lg-2 control-label">Survey Items</label>
+  		      <div class="col-lg-10">
+  		        <%= f.input :survey_items, :as => :check_boxes, :label => false, :member_label => Proc.new { |si| " #{si.display_text}" } %>
+  		      </div>	
+  		    </div>
+  		  <% end %>
+  		  <%= f.actions do %>
+  		    <%= f.action :submit, :as => :button, :button_html => { :class => "btn btn-primary"} %>
+  		  <% end %>
+        </fieldset>	
+      <% end %>
+    </div>
+  </div>
+</div>
+<% elsif @project.get_role(current_user) == 'coder' %>
+Yay you are a coder!
+
+  <%= semantic_form_for :gather_response, :html => { :class => "form-horizontal", :method => :get } do |f| %>
+  <fieldset>
+    <legend><%= @survey.name %></legend>	    
+	  <%= f.inputs do %>
+  	    <% @current_items.each do |item| %>
+  		  <% if item.field_type == "Label" %>
+  		    <p><%= raw item.display_text %></p>
+  		  <% else %>
+			<%= f.semantic_fields_for "#{item.field_name}", :html => { :method => :get } do |fi| %>
+			  <%= fi.input :survey_item_id, :as => :hidden, :input_html => { :value => item.id } %>	
+			  <%= fi.input :survey_id, :as => :hidden, :input_html => { :value => @survey.id } %>  
+	  	      <%= fi.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+	  		  <div class="form-group"> 
+	  		    <label for="name" class="col-lg-2 control-label"><%= item.display_text.html_safe %></label>
+	  		    <div class="col-lg-10">
+				  <%= fi.input :response_text, :as => item.formtastic_field_map, :label => false , :collection => item.field_options.nil? ? '' : item.field_options.split(','), :input_html => { :class => "form-control"} %>	
+	  		    </div>	
+	  		  </div>  
+		    <% end %>
+		  <% end %>
+		<% end %>
+	  <% end %>	
+	  <%= f.actions do %>
+	    <%= f.action :submit, :as => :button, :button_html => { :class => "btn btn-primary"} %>
+	  <% end %>
+  </fieldset>	
+  <% end %>
+
+<% else %>
+  You are not associated with this project.
+<% end %>
