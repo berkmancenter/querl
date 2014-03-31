@@ -16,6 +16,7 @@
       <div class="page-header" id="banner">
 		  <div class="row">
 	        <%= render 'layouts/messages' %>
+			<%= breadcrumbs pretext: "You are here: ", separator: " &rsaquo; " %>
 	        <%= yield %>
 		  </div>	  
       </div>

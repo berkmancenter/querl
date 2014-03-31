@@ -1,4 +1,6 @@
-<h1><%= @survey.project.name %>: <%= @survey.name %></h1>
+<% breadcrumb :survey, @survey %>
+
+<h1><%= @project.name %>: <%= @survey.name %></h1>
 
 <% if @project.get_role(current_user) == 'owner' %>		
 <div class="col-lg-6">
