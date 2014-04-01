@@ -29,6 +29,12 @@ Querl::Application.routes.draw do
       get 'move'
     end
   end
+  
+  resources :targets do
+    collection do
+      post 'import'
+    end
+  end
 
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
