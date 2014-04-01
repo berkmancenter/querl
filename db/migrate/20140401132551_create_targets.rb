@@ -5,7 +5,7 @@ class CreateTargets < ActiveRecord::Migration
       t.string  :display_text,   :limit => 1024
       t.text  :description
       t.string  :link_text
-      t.string :type
+      t.string :target_type
       t.references :target_list
       t.timestamps
     end

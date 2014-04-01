@@ -68,7 +68,7 @@
   	  <td><%= list.name %></td>
   	  <td><%= list.description %></td>
   	  <% if @project.get_role(current_user) == 'owner' %>
-  	    <td><%= link_to('Preview', target_list_path(list, :project_id => @project.id), :class => "action-view") %> | <%= link_to('Edit', edit_target_list_path(list), :class => "action-edit") %> | <%= link_to('Delete', target_list_path(list), :confirm => "Are you sure?", :method => :delete) %></td>
+  	    <td><%= link_to('View', target_list_path(list, :project_id => @project.id), :class => "action-view") %> | <%= link_to('Edit', edit_target_list_path(list), :class => "action-edit") %> | <%= link_to('Delete', target_list_path(list), :confirm => "Are you sure?", :method => :delete) %></td>
   	  <% else %>
   	    <td>You are not associated with this project.</td>
   	  <% end %>
