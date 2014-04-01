@@ -1,0 +1,57 @@
+<% breadcrumb :target_list, @target_list %>
+
+<h1><%= @project.name %>: <%= @target_list.name %></h1>
+
+<% if @project.get_role(current_user) == 'owner' %>		
+<div class="col-lg-6">
+  <h2>Current Targets</h2>
+  <p>Targets that are included in this Target List.</p>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover ">
+	  <tr>
+	    <th>Name</th>
+		<th>Display Text</th>
+		<th>Type</th>
+		<th>Link Text</th>
+		<th>Description</th>
+	  </tr>
+	  <% @current_items.each do |item| %>
+	  <tr>
+	    <td><%= item.name %></td>
+		<td><%= item.display_text %></td>
+		<td><%= item.type %></td>
+		<td><%= item.link_text %></td>
+		<td><%= item.description %></td>
+	  </tr>
+	  <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="col-lg-6">
+  <h2>Upload Targets</h2>
+  <p>Upload a CSV of Targets</p>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover ">
+	  <tr>
+	    <th>Name</th>
+		<th>Display Text</th>
+		<th>Type</th>
+		<th>Link Text</th>
+		<th>Description</th>
+	  </tr>
+	  <% @current_items.each do |item| %>
+	  <tr>
+	    <td><%= item.name %></td>
+		<td><%= item.display_text %></td>
+		<td><%= item.type %></td>
+		<td><%= item.link_text %></td>
+		<td><%= item.description %></td>
+	  </tr>
+	  <% end %>
+    </table>
+  </div>
+</div>
+<% else %>
+  You are not authorized to view this.
+<% end %>

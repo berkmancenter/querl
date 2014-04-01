@@ -55,5 +55,25 @@
 
 <div class="col-lg-6">
   <h2>Available Target Lists</h2>
-  <p class="lead">Project Target Lists</p>
+  <p><%= link_to "Add New Target List", new_target_list_path(:project_id => @project.id) %></p>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover ">
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+  	  <th>Actions</th>
+  	</tr>
+  	<% @target_lists.each do |list| %>
+  	<tr>
+  	  <td><%= list.name %></td>
+  	  <td><%= list.description %></td>
+  	  <% if @project.get_role(current_user) == 'owner' %>
+  	    <td><%= link_to('Preview', target_list_path(list, :project_id => @project.id), :class => "action-view") %> | <%= link_to('Edit', edit_target_list_path(list), :class => "action-edit") %> | <%= link_to('Delete', target_list_path(list), :confirm => "Are you sure?", :method => :delete) %></td>
+  	  <% else %>
+  	    <td>You are not associated with this project.</td>
+  	  <% end %>
+  	  </tr>
+  	<% end %>
+    </table>
+  </div>
 </div>

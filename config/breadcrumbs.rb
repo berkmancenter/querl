@@ -12,6 +12,11 @@ crumb :survey do |survey|
   parent :project, survey.project
 end
 
+crumb :target_list do |target_list|
+  link target_list.name, target_list_path(target_list)
+  parent :project, target_list.project
+end
+
 # crumb :projects do
 #   link "Projects", projects_path
 # end
