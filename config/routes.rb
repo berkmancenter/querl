@@ -1,4 +1,8 @@
 Querl::Application.routes.draw do
+  resources :targets
+
+  resources :target_lists
+
   resources :responses
 
   resources :survey_items do
