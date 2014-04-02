@@ -12,7 +12,11 @@ class SurveyItemsController < ApplicationController
   
   def new
     @project = Project.find(params[:project_id])
-    @survey_item = SurveyItem.new
+    unless params[:clone].nil?
+      @survey_item = SurveyItem.find(params[:clone]).dup
+    else  
+      @survey_item = SurveyItem.new
+    end  
   end
   
   def edit
@@ -22,6 +26,7 @@ class SurveyItemsController < ApplicationController
   
   def create
     @survey_item = SurveyItem.new(survey_item_params)
+    @project = @survey_item.project
     respond_to do |format|
       if @survey_item.save
         format.html { redirect_to project_url(@survey_item.project), notice: 'Survey Item was successfully created.' }
@@ -35,7 +40,7 @@ class SurveyItemsController < ApplicationController
   
   def update
     @survey_item = SurveyItem.find(params[:id])
-    
+    @project = @survey_item.project
     respond_to do |format|
       if @survey_item.update_attributes(params[:survey_item])
         format.html { redirect_to project_url(@survey_item.project), notice: 'Survey Item was successfully updated.' }

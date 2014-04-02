@@ -2,4 +2,5 @@ class TargetList < ActiveRecord::Base
   
   belongs_to :project
   has_many :targets
+  belongs_to :survey
 end
