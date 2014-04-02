@@ -39,7 +39,7 @@
   		    <div class="form-group"> 
   		      <label for="name" class="col-lg-2 control-label">Survey Items</label>
   		      <div class="col-lg-10">
-  		        <%= f.input :survey_items, :as => :check_boxes, :label => false, :member_label => Proc.new { |si| " #{si.display_text}" } %>
+  		        <%= f.input :survey_items, :as => :check_boxes, :label => false, :collection => @survey_items, :member_label => Proc.new { |si| " #{si.display_text}" } %>
   		      </div>	
   		    </div>
   		  <% end %>

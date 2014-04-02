@@ -7,7 +7,7 @@ class SurveysController < ApplicationController
   
   def show
     @project = @survey.project
-    @survey_items = SurveyItem.all
+    @survey_items = @project.survey_items
     @current_items = @survey.survey_items
     
     unless params[:gather_response].nil?
