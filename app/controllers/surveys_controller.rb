@@ -9,6 +9,7 @@ class SurveysController < ApplicationController
     @project = @survey.project
     @survey_items = @project.survey_items
     @current_items = @survey.survey_items
+    @target_lists = @project.target_lists
     
     unless params[:gather_response].nil?
       redirect_to gather_response_surveys_url(:answers => params[:gather_response])
