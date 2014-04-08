@@ -11,6 +11,13 @@ class SurveysController < ApplicationController
     @current_items = @survey.survey_items
     @target_lists = @project.target_lists
     
+    if @project.get_role(current_user) == 'coder'
+      @next_target = @survey.next_target(current_user)
+      if @next_target.nil?
+        redirect_to project_url(@project), notice: 'Coding is Complete!'
+      end  
+    end  
+    
     unless params[:gather_response].nil?
       redirect_to gather_response_surveys_url(:answers => params[:gather_response])
     end

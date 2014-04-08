@@ -5,6 +5,7 @@ class CreateSurveys < ActiveRecord::Migration
       t.text :description
       t.references :project
       t.references :target_list
+      t.string :behavior
       t.timestamps
     end
   end
