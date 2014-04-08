@@ -7,23 +7,30 @@ class Survey < ActiveRecord::Base
   
   def next_target(user)
     behavior = self.behavior
-    locked_targets = Array.new
-    self.target_pools.collect {|pool| locked_targets << pool.target_id }
+    completed_targets = Array.new
+    locked_target = self.target_pools.where(:user_id => user.id, :completed => false)
+    p "locked target"
+    p locked_target
     if behavior == "Sequential Distinct"
-      if self.target_pools.empty?
-        TargetPool.create(:user_id => user.id, :target_id => self.target_list.targets.first.id, :survey_id => self.id, :locked => true)
-        return self.target_list.targets.first
-      else  
-        self.target_list.targets.each do |target|
-          unless locked_targets.include?(target.id)
-            TargetPool.create(:user_id => user.id, :target_id => target.id, :survey_id => self.id, :locked => true)
-            return target
-          else
-            return nil  
-          end  
+      self.target_pools.where(:completed => true).collect {|pool| completed_targets << pool.target_id }
+    elsif behavior == "Sequential"
+      self.target_pools.where(:user_id => user.id, :completed => true).collect {|pool| completed_targets << pool.target_id }
+    end  
+    
+    if self.target_pools.empty?
+      TargetPool.create(:user_id => user.id, :target_id => self.target_list.targets.first.id, :survey_id => self.id, :locked => true, :completed => false)
+      return self.target_list.targets.first
+    elsif !locked_target[0].nil? 
+      return Target.find(locked_target[0].target_id)  
+    else  
+      self.target_list.targets.each do |target|
+        unless completed_targets.include?(target.id)
+          TargetPool.create(:user_id => user.id, :target_id => target.id, :survey_id => self.id, :locked => true, :completed => false)
+          return target
+        else
+          return nil  
         end  
       end  
     end  
-    
   end  
 end

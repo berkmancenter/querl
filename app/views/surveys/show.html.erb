@@ -91,7 +91,8 @@
 <br />
   <%= semantic_form_for :gather_response, :html => { :class => "form-horizontal", :method => :get } do |f| %>
   <fieldset>
-    <legend><%= @survey.name %></legend>	    
+    <legend><%= @survey.name %></legend>
+	  <%= hidden_field_tag :target_id, @next_target.id %>	    
 	  <%= f.inputs do %>
   	    <% @current_items.each do |item| %>
   		  <% if item.field_type == "Label" %>
