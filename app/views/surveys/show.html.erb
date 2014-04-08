@@ -77,9 +77,15 @@
     </div>
   </div>
 </div>
-<% elsif @project.get_role(current_user) == 'coder' %>
-Yay you are a coder!
 
+<% elsif @project.get_role(current_user) == 'coder' %>
+<h3>Current Target</h3>
+  <% unless @survey.target_list.nil? %>
+    <% @survey.target_list.targets.each do |target| %>
+	  <%= link_to target.display_text, target.link_text, :target => "_blank" %> <br />
+	<% end %>
+  <% end %>
+<br />
   <%= semantic_form_for :gather_response, :html => { :class => "form-horizontal", :method => :get } do |f| %>
   <fieldset>
     <legend><%= @survey.name %></legend>	    

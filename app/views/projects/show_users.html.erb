@@ -12,7 +12,11 @@
 	  <tr>
 	    <td><%= user.username %></td>
 		<td><%= user.get_role(@project) %></td>
-	    <td><%= link_to 'Remove from Project', remove_user_projects_path(:project_id => @project.id, :user_id => user.id), :confirm => "Are you sure?" %></td>
+	    <td>
+		  <% unless user == current_user %>
+		    <%= link_to 'Remove from Project', remove_user_projects_path(:project_id => @project.id, :user_id => user.id), :confirm => "Are you sure?" %>
+		  <% end %>  
+		</td>  
 	  </tr>
 	  <% end %>
     </table>
