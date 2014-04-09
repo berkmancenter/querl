@@ -8,13 +8,14 @@ class Survey < ActiveRecord::Base
   def next_target(user)
     behavior = self.behavior
     completed_targets = Array.new
+    all_locked = Array.new
     locked_target = self.target_pools.where(:user_id => user.id, :completed => false)
-    p "locked target"
-    p locked_target
+    self.target_pools.where(:locked => true, :completed => false).collect {|pool| all_locked << pool.target_id }
+    
     if behavior == "Sequential Distinct"
-      self.target_pools.where(:completed => true).collect {|pool| completed_targets << pool.target_id }
+      self.target_pools.where(:locked => true).collect {|pool| completed_targets << pool.target_id }
     elsif behavior == "Sequential"
-      self.target_pools.where(:user_id => user.id, :completed => true).collect {|pool| completed_targets << pool.target_id }
+      self.target_pools.where(:user_id => user.id, :locked => true).collect {|pool| completed_targets << pool.target_id }
     end  
     
     if self.target_pools.empty?
@@ -24,13 +25,14 @@ class Survey < ActiveRecord::Base
       return Target.find(locked_target[0].target_id)  
     else  
       self.target_list.targets.each do |target|
-        unless completed_targets.include?(target.id)
+        unless completed_targets.include?(target.id) || all_locked.include?(target.id)
           TargetPool.create(:user_id => user.id, :target_id => target.id, :survey_id => self.id, :locked => true, :completed => false)
-          return target
+          next_target = target
         else
-          return nil  
+          next_target = nil  
         end  
-      end  
+      end
+      return next_target  
     end  
   end  
 end

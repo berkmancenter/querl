@@ -85,13 +85,11 @@
 </div>
 
 <% elsif @project.get_role(current_user) == 'coder' %>
-<h3>Current Target</h3>
-  <%= link_to @next_target.display_text, @next_target.link_text, :target => "_blank" %>
   
 <br />
   <%= semantic_form_for :gather_response, :html => { :class => "form-horizontal", :method => :get } do |f| %>
   <fieldset>
-    <legend><%= @survey.name %></legend>
+    <legend>Target: <%= link_to @next_target.display_text, @next_target.link_text, :target => "_blank" %></legend>
 	  <%= hidden_field_tag :target_id, @next_target.id %>	    
 	  <%= f.inputs do %>
   	    <% @current_items.each do |item| %>

@@ -19,7 +19,7 @@ class SurveysController < ApplicationController
     end  
     
     unless params[:gather_response].nil?
-      redirect_to gather_response_surveys_url(:answers => params[:gather_response], :target_id => params[:target_id])
+      redirect_to gather_response_surveys_url(:answers => params[:gather_response], :target_id => params[:target_id], :survey_id => @survey.id)
     end
   end  
   
@@ -91,7 +91,7 @@ class SurveysController < ApplicationController
     params[:answers].each_value do |value|
       response = Response.create(value)
     end  
-    pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => response.survey_id, :user_id => current_user.id, :locked => true})
+    pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => params[:survey_id], :user_id => current_user.id, :locked => true})
     pool.completed = true
     pool.save
     redirect_to root_url, notice: 'Response was successfully recorded.'
