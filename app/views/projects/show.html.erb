@@ -28,6 +28,8 @@
   </div> 
 </div>
 
+<% if @project.get_role(current_user) == 'owner' %>
+
 <div class="col-lg-6">
   <h2>Available Survey Items</h2>
   <p><%= link_to "Add New Survey Item", new_survey_item_path(:project_id => @project.id) %></p>
@@ -77,3 +79,4 @@
     </table>
   </div>
 </div>
+<% end %>

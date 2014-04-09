@@ -37,8 +37,8 @@
           <legend>Manage Survey Items for <%= @survey.name %></legend>	    
   		  <%= f.inputs do %>
   		    <div class="form-group"> 
-  		      <label for="name" class="col-lg-2 control-label">Survey Items</label>
-  		      <div class="col-lg-10">
+  		      <label for="name" class="col-lg-3 control-label">Survey Items</label>
+  		      <div class="col-lg-9">
   		        <%= f.input :survey_items, :as => :check_boxes, :label => false, :collection => @survey_items, :member_label => Proc.new { |si| " #{si.display_text}" } %>
   		      </div>	
   		    </div>
@@ -63,9 +63,15 @@
           <legend>Manage Target Lists for <%= @survey.name %></legend>	    
   		  <%= f.inputs do %>
   		    <div class="form-group"> 
-  		      <label for="name" class="col-lg-2 control-label">Target Lists</label>
-  		      <div class="col-lg-10">
+  		      <label for="name" class="col-lg-3 control-label">Target Lists</label>
+  		      <div class="col-lg-9">
   		        <%= f.input :target_list_id, :as => :radio, :label => false, :collection => @target_lists, :member_label => Proc.new { |si| " #{si.name}" } %>
+  		      </div>	
+  		    </div>
+  		    <div class="form-group"> 
+  		      <label for="name" class="col-lg-3 control-label">Behavior</label>
+  		      <div class="col-lg-9">
+  		        <%= f.input :behavior, :as => :radio, :label => false, :collection => ["Sequential", "Sequential Distinct"] %>
   		      </div>	
   		    </div>
   		  <% end %>
@@ -77,12 +83,14 @@
     </div>
   </div>
 </div>
-<% elsif @project.get_role(current_user) == 'coder' %>
-Yay you are a coder!
 
+<% elsif @project.get_role(current_user) == 'coder' %>
+  
+<br />
   <%= semantic_form_for :gather_response, :html => { :class => "form-horizontal", :method => :get } do |f| %>
   <fieldset>
-    <legend><%= @survey.name %></legend>	    
+    <legend>Target: <%= link_to @next_target.display_text, @next_target.link_text, :target => "_blank" %></legend>
+	  <%= hidden_field_tag :target_id, @next_target.id %>	    
 	  <%= f.inputs do %>
   	    <% @current_items.each do |item| %>
   		  <% if item.field_type == "Label" %>
