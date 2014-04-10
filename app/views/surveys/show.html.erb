@@ -100,6 +100,7 @@
 			  <%= fi.input :survey_item_id, :as => :hidden, :input_html => { :value => item.id } %>	
 			  <%= fi.input :survey_id, :as => :hidden, :input_html => { :value => @survey.id } %>  
 	  	      <%= fi.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+			  <%= fi.input :target_id, :as => :hidden, :input_html => { :value => @next_target.id } %>
 	  		  <div class="form-group"> 
 	  		    <label for="name" class="col-lg-2 control-label"><%= item.display_text.html_safe %></label>
 	  		    <div class="col-lg-10">

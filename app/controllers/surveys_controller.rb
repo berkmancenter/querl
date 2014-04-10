@@ -10,10 +10,10 @@ class SurveysController < ApplicationController
     @survey_items = @project.survey_items
     @current_items = @survey.survey_items
     @target_lists = @project.target_lists
-    
+
     if @project.get_role(current_user) == 'coder'
       @next_target = @survey.next_target(current_user)
-      if @next_target.nil?
+      if @next_target.blank?
         redirect_to project_url(@project), notice: 'Coding is Complete!'
       end  
     end  
@@ -55,7 +55,11 @@ class SurveysController < ApplicationController
         unless params[:survey][:survey_item_ids].nil?
           nil_items = SurveyItemsSurveys.all(:conditions => {:survey_id => @survey.id, :position => nil})
           i = 0
-          pos = all_items.last.position + 1
+          if all_items.last.nil? || all_items.last.position.nil?
+            pos = 1
+          else  
+            pos = all_items.last.position + 1
+          end  
           while i < nil_items.length  do
              nil_items[i].position = pos
              nil_items[i].save
@@ -88,13 +92,23 @@ class SurveysController < ApplicationController
   end
   
   def gather_response
+    @survey = Survey.find(params[:survey_id].to_i)
+    @project = @survey.project
     params[:answers].each_value do |value|
       response = Response.create(value)
     end  
-    pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => params[:survey_id], :user_id => current_user.id, :locked => true})
+    pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true})
+
     pool.completed = true
     pool.save
-    redirect_to root_url, notice: 'Response was successfully recorded.'
+    params[:gather_response] = nil
+    
+    @next_target = @survey.next_target(current_user)
+    if @next_target.blank?
+      redirect_to project_url(@project), notice: 'Response was successfully recorded. Coding is Complete!'
+    else
+      redirect_to survey_url(@survey.id), notice: 'Response was successfully recorded.'
+    end
   end
   
   def remove_survey_item

@@ -6,6 +6,7 @@ class Survey < ActiveRecord::Base
   has_many :target_pools, -> { order('target_id') }
   
   def next_target(user)
+    nxttar = ""
     behavior = self.behavior
     completed_targets = Array.new
     all_locked = Array.new
@@ -27,12 +28,10 @@ class Survey < ActiveRecord::Base
       self.target_list.targets.each do |target|
         unless completed_targets.include?(target.id) || all_locked.include?(target.id)
           TargetPool.create(:user_id => user.id, :target_id => target.id, :survey_id => self.id, :locked => true, :completed => false)
-          next_target = target
-        else
-          next_target = nil  
+          nxttar = target
         end  
       end
-      return next_target  
+      return nxttar  
     end  
   end  
 end

@@ -1,0 +1,5 @@
+  <% unless @csv.nil? %>
+	<h4><%= link_to "Download CSV", "/uploads/report.csv" %></h4>
+  <% else %>
+    <h4><%= link_to('Export Responses to CSV', export_responses_path(:survey_id => @survey.id)) %></h4>	  
+  <% end %>

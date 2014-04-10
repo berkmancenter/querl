@@ -3,7 +3,12 @@ Querl::Application.routes.draw do
 
   resources :target_lists
 
-  resources :responses
+  resources :responses do
+    collection do
+      get 'export'
+      get 'reports'
+    end
+  end
 
   resources :survey_items do
     collection do
