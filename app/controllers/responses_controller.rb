@@ -58,12 +58,14 @@ class ResponsesController < ApplicationController
   
   def reports
     @survey = Survey.find(params[:survey_id])
+    @target_lists = @survey.project.target_lists
   end  
   
   def export
     @survey = Survey.find(params[:survey_id])
     @survey_items = @survey.survey_items
-    @responses = Response.all(:conditions => {:survey_id => @survey.id})
+    @target_list = TargetList.find(params[:target_list_id])
+    @responses = Response.all(:conditions => ["survey_id = ? and target_id IN ?", @survey.id, @target_list.targets])
     CSV.open("#{Rails.root}/public/uploads/report.csv", "w") do |csv|
       csv << ["title", "subject", "course number", "affiliation", "contact first name", "contact last name", "contact username", "contact email", "contact phone", "pre class appt", "timeframe", "repository", "room", "staff involvement", "number of students", "status", "file", "external syllabus", "duration", "comments", "course sessions", "session count", "goal", "instruction session", "date submitted"]
       @courses.each do |course|
