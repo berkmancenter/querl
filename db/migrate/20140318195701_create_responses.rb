@@ -4,6 +4,7 @@ class CreateResponses < ActiveRecord::Migration
       t.references :survey, :null => false
       t.references :user, :null => false
       t.references :survey_item, :null => false
+      t.references :target, :null => false
       t.text :response_text
       t.timestamps
     end

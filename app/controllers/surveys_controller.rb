@@ -55,7 +55,11 @@ class SurveysController < ApplicationController
         unless params[:survey][:survey_item_ids].nil?
           nil_items = SurveyItemsSurveys.all(:conditions => {:survey_id => @survey.id, :position => nil})
           i = 0
-          pos = all_items.last.position + 1
+          if all_items.last.nil? || all_items.last.position.nil?
+            pos = 1
+          else  
+            pos = all_items.last.position + 1
+          end  
           while i < nil_items.length  do
              nil_items[i].position = pos
              nil_items[i].save
@@ -94,6 +98,7 @@ class SurveysController < ApplicationController
       response = Response.create(value)
     end  
     pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true})
+
     pool.completed = true
     pool.save
     params[:gather_response] = nil
