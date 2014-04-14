@@ -95,6 +95,9 @@ class SurveysController < ApplicationController
     @survey = Survey.find(params[:survey_id].to_i)
     @project = @survey.project
     params[:answers].each_value do |value|
+      if value["response_text"].class == Array
+        value["response_text"] = value["response_text"].reject! { |r| r.empty? }.join(", ")
+      end
       response = Response.create(value)
     end  
     pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true})

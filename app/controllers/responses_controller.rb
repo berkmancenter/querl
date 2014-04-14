@@ -59,36 +59,54 @@ class ResponsesController < ApplicationController
   def reports
     @survey = Survey.find(params[:survey_id])
     @target_lists = @survey.project.target_lists
+    unless params[:csv].nil?
+      @csv = true
+    end  
   end  
   
   def export
     @survey = Survey.find(params[:survey_id])
     @survey_items = @survey.survey_items
+    @headers = @survey_items.collect {|item| item.field_name }
     @target_list = TargetList.find(params[:target_list_id])
-    @responses = Response.all(:conditions => ["survey_id = ? and target_id IN ?", @survey.id, @target_list.targets])
+    @responses = Response.all(:conditions => ["survey_id = ? and target_id IN (?)", @survey.id, @target_list.targets.collect{|target| target.id}])
+    @grouped = @responses.group_by { |i| [i.user_id, i.target_id] }
+    p "headers"
+    p @headers
+    p "responses"
+    p @responses
+    p "grouped"
+    p @grouped
+ 
     CSV.open("#{Rails.root}/public/uploads/report.csv", "w") do |csv|
-      csv << ["title", "subject", "course number", "affiliation", "contact first name", "contact last name", "contact username", "contact email", "contact phone", "pre class appt", "timeframe", "repository", "room", "staff involvement", "number of students", "status", "file", "external syllabus", "duration", "comments", "course sessions", "session count", "goal", "instruction session", "date submitted"]
-      @courses.each do |course|
+      header = ["coder_id", "target"]
+      @survey_items.each do |item|
+        header << item.field_name
+      end  
+      p "header"
+      p header  
+      csv << header
+      @grouped.each do |key, value|
         row = Array.new
-        row << [course.title, course.subject, course.course_number, course.affiliation, course.contact_first_name, course.contact_last_name, course.contact_username, course.contact_email, course.contact_phone, course.pre_class_appt, course.timeframe] 
-        unless course.repository.nil?
-          row << [course.repository.name]
-        else 
-          row << ["None"]
+        p "key"
+        p key
+        row << [User.find(key[0]).username, Target.find(key[1]).link_text]
+        @survey_items.each do |item|
+          response = value.select{|resp| resp.survey_item_id == item.id}[0]
+          unless response.nil?
+            row << [response.response_text]
+          else
+            row << [""]  
+          end  
         end
-        unless course.room.nil?
-          row << [course.room.name]
-        else
-          row << ["None"]
-        end
-        row << [course.staff_involvement, course.number_of_students, course.status, course.file, course.external_syllabus, course.duration, course.comments, course.course_sessions, course.session_count, course.goal, course.instruction_session, course.created_at]
         row.flatten!
         csv << row
       end
+
     end
     flash[:notice] = 'Exported!'
     @csv = true
-    redirect_to courses_path(:csv => @csv)
+    redirect_to reports_responses_path(:survey_id => @survey.id, :csv => @csv)
   end  
   
   private
