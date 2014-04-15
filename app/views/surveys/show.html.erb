@@ -17,7 +17,7 @@
 	  <tr>
 	    <td><%= item.field_name %></td>
 		<td><%= item.field_type %></td>
-		<td><%= link_to "&#8593;".html_safe, move_surveys_path(:method => 'decrement_position', :survey_id => @survey.id, :survey_item_id => item.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "&#8595;".html_safe, move_surveys_path(:method => 'increment_position', :survey_id => @survey.id, :survey_item_id => item.id) %>&nbsp;&nbsp;&nbsp; | 
+		<td><%= link_to "&#8593;".html_safe, move_surveys_path(:method => 'move_higher', :survey_id => @survey.id, :survey_item_id => item.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "&#8595;".html_safe, move_surveys_path(:method => 'move_lower', :survey_id => @survey.id, :survey_item_id => item.id) %>&nbsp;&nbsp;&nbsp; | 
 	    <%= link_to "Move to Top", move_surveys_path(:method => 'move_to_top', :survey_id => @survey.id, :survey_item_id => item.id)%> | <%= link_to "Move to Bottom", move_surveys_path(:method => 'move_to_bottom', :survey_id => @survey.id, :survey_item_id => item.id) %> | <%= link_to "Remove", move_surveys_path(:method => 'remove_from_list', :survey_id => @survey.id, :survey_item_id => item.id) %></td>
 	  </tr>
 	  <% end %>
