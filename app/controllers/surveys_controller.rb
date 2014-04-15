@@ -138,7 +138,7 @@ class SurveysController < ApplicationController
         survey.survey_items = survey.survey_items.delete_if {|item| item.id == params[:survey_item_id].to_i }
       end  
     end
-    redirect_to survey_url(survey)#, notice: 'Survey item was repositioned.'
+    redirect_to survey_url(survey)
   end
   
   private

@@ -16,7 +16,7 @@
 	    <td><%= survey.name %></td>
 		<td><%= survey.description %></td>
 		<% if @project.get_role(current_user) == 'owner' %>
-	      <td><%= link_to 'Preview', preview_surveys_path(:id => survey.id) %> | <%= link_to 'Manage', survey_path(survey) %> | <%= link_to 'Edit', edit_survey_path(survey, :project_id => @project.id) %> | <%= link_to 'Reports', reports_responses_path(:survey_id => survey.id) %> | <%= link_to('Delete', survey_path(survey), :confirm => "Are you sure?", :method => :delete) %></td>
+	      <td><%= link_to 'Preview', preview_surveys_path(:id => survey.id) %> | <%= link_to 'Manage', survey_path(survey) %> | <%= link_to 'Rename', edit_survey_path(survey, :project_id => @project.id) %> | <%= link_to 'Reports', reports_responses_path(:survey_id => survey.id) %> | <%= link_to('Delete', survey_path(survey), :confirm => "Are you sure?", :method => :delete) %></td>
 		<% elsif @project.get_role(current_user) == 'coder' %>
 		  <td><%= link_to 'Begin Coding', survey_path(survey) %></td>
 		<% else %>
