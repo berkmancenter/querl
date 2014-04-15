@@ -9,14 +9,14 @@
   <p>
     These are the fields to be populated:
 	<ul>
-	  <li>Name (no spaces or special characters)</li>
+	  <li>Name (no spaces or special characters, *required)</li>
 	  <li>Display Text</li>
 	  <li>Description</li>
-	  <li>Link Text</li>
+	  <li>Link Text (*required)</li>
 	</ul>
   </p>
   <p>
-	  This is what the header row of your CSV file will look like:<br /><br />
+	  This is what the header row of your CSV file might look like:<br /><br />
 	  <code>name,display_text,link_text,description</code>
   </p>
   <%= form_tag import_targets_path, :multipart => true, :class => "form-horizontal" do %>

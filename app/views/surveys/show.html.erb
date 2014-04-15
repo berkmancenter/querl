@@ -89,7 +89,11 @@
 <br />
   <%= semantic_form_for :gather_response, :html => { :class => "form-horizontal", :method => :get } do |f| %>
   <fieldset>
-    <legend>Target: <%= link_to @next_target.display_text, @next_target.link_text, :target => "_blank" %></legend>
+	<% if @next_target.display_text.nil? || @next_target.display_text.blank? %>
+	  <legend>Target: <%= link_to @next_target.link_text, @next_target.link_text, :target => "_blank" %></legend>
+	<% else %>  
+      <legend>Target: <%= link_to @next_target.display_text, @next_target.link_text, :target => "_blank" %></legend>
+    <% end %>
 	  <%= hidden_field_tag :target_id, @next_target.id %>	    
 	  <%= f.inputs do %>
   	    <% @current_items.each do |item| %>
