@@ -10,8 +10,9 @@ class SurveysController < ApplicationController
     @survey_items = @project.survey_items
     @current_items = @survey.survey_items
     @target_lists = @project.target_lists
+    @owner_code = params[:owner_code]
 
-    if @project.get_role(current_user) == 'coder'
+    if @project.get_role(current_user) == 'coder' || @owner_code
       @next_target = @survey.next_target(current_user)
       if @next_target.blank?
         redirect_to project_url(@project), notice: 'Coding is Complete!'
