@@ -33,5 +33,16 @@ class Survey < ActiveRecord::Base
       end
       return nxttar  
     end  
-  end  
+  end 
+  
+  def clone_with_associations
+      new_survey = self.dup
+      new_survey.target_list = nil
+      new_survey.behavior = nil
+      new_survey.save
+      #simple association
+      new_survey.project = self.project
+      new_survey.survey_items = self.survey_items
+      new_survey
+    end 
 end
