@@ -4,6 +4,37 @@
 
 <% if @project.get_role(current_user) == 'owner' %>		
 <div class="col-lg-6">
+  <h2>Batch Upload</h2>
+  <p>Upload a CSV of Targets</p>
+  <p>
+    These are the fields to be populated:
+	<ul>
+	  <li>Name (no spaces or special characters, *required)</li>
+	  <li>Display Text</li>
+	  <li>Description</li>
+	  <li>Link Text (*required)</li>
+	</ul>
+  </p>
+  <p>
+	  This is what the header row of your CSV file might look like:<br /><br />
+	  <code>name,display_text,link_text,description</code>
+  </p>
+  <%= form_tag import_targets_path, :multipart => true, :class => "form-horizontal" do %>
+    <fieldset>
+      <legend>Targets for <%= @target_list.name %></legend>
+  		<%= hidden_field_tag :target_list_id, @target_list.id %>
+  		<div class="form-group"> 
+  		  <label for="name" class="col-lg-2 control-label">File</label>
+  		  <div class="col-lg-10">
+  		    <%= file_field 'upload', 'datafile', :class => "form-control" %>
+  		  </div>	
+  		</div>
+  		<%= submit_tag "Upload", :disable_with => 'Uploading...', :class => "btn btn-primary" %>
+    </fieldset>	
+  <% end %>
+</div>
+
+<div class="col-lg-12">
   <h2>Current Targets</h2>
   <p>Targets that are included in this Target List.</p>
   <div class="table-responsive">
@@ -26,37 +57,6 @@
 	  <% end %>
     </table>
   </div>
-</div>
-
-<div class="col-lg-6">
-  <h2>Batch Upload</h2>
-  <p>Upload a CSV of Targets</p>
-  <p>
-    These are the fields to be populated:
-	<ul>
-	  <li>Name (no spaces or special characters)</li>
-	  <li>Display Text</li>
-	  <li>Description</li>
-	  <li>Link Text</li>
-	</ul>
-  </p>
-  <p>
-	  This is what the header row of your CSV file will look like:<br /><br />
-	  <code>name,display_text,link_text,description</code>
-  </p>
-  <%= form_tag import_targets_path, :multipart => true, :class => "form-horizontal" do %>
-    <fieldset>
-      <legend>Targets for <%= @target_list.name %></legend>
-  		<%= hidden_field_tag :target_list_id, @target_list.id %>
-  		<div class="form-group"> 
-  		  <label for="name" class="col-lg-2 control-label">File</label>
-  		  <div class="col-lg-10">
-  		    <%= file_field 'upload', 'datafile', :class => "form-control" %>
-  		  </div>	
-  		</div>
-  		<%= submit_tag "Upload", :disable_with => 'Uploading...', :class => "btn btn-primary" %>
-    </fieldset>	
-  <% end %>
 </div>
 <% else %>
   You are not authorized to view this.
