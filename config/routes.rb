@@ -32,6 +32,7 @@ Querl::Application.routes.draw do
       get 'remove_survey_item'
       get 'preview'
       get 'move'
+      get 'clone'
     end
   end
   

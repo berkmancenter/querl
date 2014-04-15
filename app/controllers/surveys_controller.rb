@@ -71,7 +71,7 @@ class SurveysController < ApplicationController
         unless params[:survey_id].nil?
           format.html { redirect_to survey_url(Survey.find(params[:id].to_i)), notice: 'Survey was successfully updated.' }
         else  
-          format.html { redirect_to root_url, notice: 'Survey was successfully updated.' }
+          format.html { redirect_to project_url(@survey.project), notice: 'Survey was successfully updated.' }
         end  
         format.json { head :no_content }  
       else
@@ -141,6 +141,12 @@ class SurveysController < ApplicationController
     end
     redirect_to survey_url(survey)
   end
+  
+  def clone
+    @survey = Survey.find(params[:survey_id])
+    @new_survey = @survey.clone_with_associations
+    redirect_to project_url(@survey.project), notice: 'Survey was cloned!'
+  end  
   
   private
     # Use callbacks to share common setup or constraints between actions.
