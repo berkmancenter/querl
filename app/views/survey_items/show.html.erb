@@ -10,7 +10,11 @@
 		  <div class="form-group"> 
 		    <label for="name" class="col-lg-2 control-label"><%= @survey_item.display_text %></label>
 		    <div class="col-lg-10">
-		      <%= f.input @survey_item.field_name, :as => @survey_item.formtastic_field_map, :label => false, :collection => @survey_item.field_options.nil? ? '' : @survey_item.field_options.split(',') %>
+			  <% if @survey_item.formtastic_field_map == "radio" || @survey_item.formtastic_field_map == "check_boxes" %>
+			    <%= f.input @survey_item.field_name, :as => @survey_item.formtastic_field_map, :label => false, :collection => @survey_item.field_options.nil? ? '' : @survey_item.field_options.split(',') %>
+			  <% else %>
+			    <%= f.input @survey_item.field_name, :as => @survey_item.formtastic_field_map, :label => false, :collection => @survey_item.field_options.nil? ? '' : @survey_item.field_options.split(','), :input_html => { :class => "form-control"}, :start_year => Time.now.year - 100, :end_year => Time.now.year + 100 %>
+			  <% end %>
 		    </div>	
 		  </div>
 		<% end %>
