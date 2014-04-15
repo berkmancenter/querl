@@ -133,7 +133,7 @@ class SurveysController < ApplicationController
   def move
     survey = Survey.find(params[:survey_id])
     survey_items_surveys_item = SurveyItemsSurveys.first(:conditions => {:survey_id => survey.id, :survey_item_id => params[:survey_item_id]})
-    if ["increment_position", "decrement_position", "move_to_top", "move_to_bottom", "remove_from_list"].include?(params[:method]) and !survey_items_surveys_item.nil?
+    if ["move_higher", "move_lower", "move_to_top", "move_to_bottom", "remove_from_list"].include?(params[:method]) and !survey_items_surveys_item.nil?
       survey_items_surveys_item.send(params[:method])
       if params[:method] == "remove_from_list"
         survey.survey_items = survey.survey_items.delete_if {|item| item.id == params[:survey_item_id].to_i }
