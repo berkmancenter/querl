@@ -8,7 +8,7 @@ class SurveyItem < ActiveRecord::Base
   validates_uniqueness_of :field_name
   validates_format_of :field_name, :with => /^\S+\w{2,32}\S{1,}/, :multiline => true, :message => "cannot contain spaces or special characters"
   
-  FIELD_TYPES = ['Checkbox', 'Dropdown', 'File', 'Radio', 'String', 'Textarea', 'Date', 'Label' ]
+  FIELD_TYPES = ['Checkbox', 'Dropdown', 'File', 'Radio', 'String (Text box)', 'Textarea (Paragraph)', 'Date', 'Label' ]
   FIELD_OPTIONS = ['']
   
   def to_s
@@ -25,9 +25,9 @@ class SurveyItem < ActiveRecord::Base
       as_param = "file"
     elsif self.field_type == "Radio"
       as_param = "radio"
-    elsif self.field_type == "String"
+    elsif self.field_type == "String (Text box)"
       as_param = "string"
-    elsif self.field_type == "Textarea"
+    elsif self.field_type == "Textarea (Paragraph)"
       as_param = "text"
     elsif self.field_type == "Date"
       as_param = "date_select"  
