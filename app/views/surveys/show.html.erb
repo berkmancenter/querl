@@ -105,12 +105,23 @@
 	  	      <%= fi.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
 			  <%= fi.input :target_id, :as => :hidden, :input_html => { :value => @next_target.id } %>
 	  		  <div class="form-group"> 
-	  		    <label for="name" class="col-lg-2 control-label"><%= item.display_text.html_safe %></label>
+	  		    <label for="name" class="col-lg-2 control-label"><%= item.display_text.html_safe %><%= item.required ? "*" : "" %></label>
 	  		    <div class="col-lg-10">
-				  <% if item.formtastic_field_map == "radio" || item.formtastic_field_map == "check_boxes" %>
-				    <%= fi.input :response_text, :as => item.formtastic_field_map, :label => false , :collection => item.field_options.nil? ? '' : item.field_options.split(',') %>	
+				  <% if item.formtastic_field_map == "radio" || item.formtastic_field_map == "check_boxes" || item.formtastic_field_map ==  "select" %>
+				    <% unless item.field_options.nil? %>
+					  <% new_collection = Array.new %>
+					  <% item.field_options.split(',').each do |option| %>
+					    <% if !@gather_response.nil? && @gather_response["#{item.field_name}"]["response_text"].include?(option) %>
+					      <% new_collection << ["#{option}", "#{option}", {:checked => "checked"}] %>
+						<% else %>
+						  <% new_collection << ["#{option}", "#{option}"] %>  
+						<% end %>  
+					  <% end %>	
+					<% end %>
+					
+				    <%= fi.input :response_text, :as => item.formtastic_field_map, :label => false, :collection => item.field_options.nil? ? '' : new_collection %>	
 				  <% else %>
-				    <%= fi.input :response_text, :as => item.formtastic_field_map, :label => false , :collection => item.field_options.nil? ? '' : item.field_options.split(','), :input_html => { :class => "form-control"}, :start_year => Time.now.year - 100, :end_year => Time.now.year + 100 %>	
+				    <%= fi.input :response_text, :as => item.formtastic_field_map, :label => false, :input_html => { :class => "form-control", :value => @gather_response.nil? ? "" : @gather_response["#{item.field_name}"]["response_text"]}, :start_year => Time.now.year - 100, :end_year => Time.now.year + 100 %>	
 				  <% end %>
 	  		    </div>	
 	  		  </div>  
