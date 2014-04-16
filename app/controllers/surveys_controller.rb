@@ -18,6 +18,9 @@ class SurveysController < ApplicationController
         redirect_to project_url(@project), notice: 'Coding is Complete!'
       end  
     end  
+    unless params[:answers].nil?
+      @gather_response = params[:answers]
+    end
     
     unless params[:gather_response].nil?
       redirect_to gather_response_surveys_url(:answers => params[:gather_response], :target_id => params[:target_id], :survey_id => @survey.id)
@@ -95,24 +98,54 @@ class SurveysController < ApplicationController
   def gather_response
     @survey = Survey.find(params[:survey_id].to_i)
     @project = @survey.project
-    params[:answers].each_value do |value|
-      if value["response_text"].class == Array
-        value["response_text"] = value["response_text"].reject! { |r| r.empty? }.join(", ")
-      end
-      response = Response.create(value)
-    end  
-    pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true})
-
-    pool.completed = true
-    pool.save
-    params[:gather_response] = nil
+    @survey_items = @project.survey_items
+    @current_items = @survey.survey_items
+    @target_lists = @project.target_lists
+    @owner_code = params[:owner_code]
     
-    @next_target = @survey.next_target(current_user)
-    if @next_target.blank?
-      redirect_to project_url(@project), notice: 'Response was successfully recorded. Coding is Complete!'
+    @required_items = Array.new
+    @survey.survey_items.where(:required => true).collect{|item| @required_items << item.id}
+    
+    req_error = false
+    message = ''
+    params[:answers].each_value do |value|
+      if @required_items.include?(value["survey_item_id"].to_i)
+        if value["response_text"].blank?
+          p "REQUIRED ERROR!"
+          @next_target = Target.find(value["target_id"].to_i)
+          req_error = true
+          message = "Please enter required fields that are marked with *."
+        end 
+      end 
+    end  
+    
+    if !req_error
+      params[:answers].each_value do |value|
+        if value["response_text"].class == Array
+          value["response_text"] = value["response_text"].reject! { |r| r.empty? }.join(", ")
+        end
+        response = Response.create(value)
+      end 
+      pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true})
+      pool.completed = true
+      pool.save
+      params[:gather_response] = nil
+    
+      @next_target = @survey.next_target(current_user)
+      if @next_target.blank?
+        redirect_to project_url(@project), notice: 'Response was successfully recorded. Coding is Complete!'
+      else
+        redirect_to survey_url(@survey.id), notice: 'Response was successfully recorded.'
+      end
     else
-      redirect_to survey_url(@survey.id), notice: 'Response was successfully recorded.'
+      p "gather response"
+      @gather_response = params[:answers]
+      p @gather_response
+      redirect_to survey_url(@survey.id, :answers => @gather_response), alert: message
+      #format.html { render action: "show" }
+      #format.json { render json: @survey.errors, status: :unprocessable_entity }
     end
+    
   end
   
   def remove_survey_item

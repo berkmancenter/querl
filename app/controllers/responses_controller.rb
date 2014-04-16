@@ -71,25 +71,15 @@ class ResponsesController < ApplicationController
     @target_list = TargetList.find(params[:target_list_id])
     @responses = Response.all(:conditions => ["survey_id = ? and target_id IN (?)", @survey.id, @target_list.targets.collect{|target| target.id}])
     @grouped = @responses.group_by { |i| [i.user_id, i.target_id] }
-    p "headers"
-    p @headers
-    p "responses"
-    p @responses
-    p "grouped"
-    p @grouped
  
     CSV.open("#{Rails.root}/public/uploads/report.csv", "w") do |csv|
       header = ["coder_id", "target"]
       @survey_items.each do |item|
         header << item.field_name
-      end  
-      p "header"
-      p header  
+      end   
       csv << header
       @grouped.each do |key, value|
         row = Array.new
-        p "key"
-        p key
         row << [User.find(key[0]).username, Target.find(key[1]).link_text]
         @survey_items.each do |item|
           response = value.select{|resp| resp.survey_item_id == item.id}[0]
@@ -104,7 +94,7 @@ class ResponsesController < ApplicationController
       end
 
     end
-    flash[:notice] = 'Exported!'
+    flash[:notice] = 'Report has been generated! Please click Download CSV.'
     @csv = true
     redirect_to reports_responses_path(:survey_id => @survey.id, :csv => @csv)
   end  
