@@ -70,7 +70,7 @@
   		    <div class="form-group"> 
   		      <label for="name" class="col-lg-3 control-label">Behavior</label>
   		      <div class="col-lg-9">
-  		        <%= f.input :behavior, :as => :radio, :label => false, :collection => ["Sequential", "Sequential Distinct"] %>
+  		        <%= f.input :behavior, :as => :radio, :label => false, :collection => ["Multicode (all coders get all targets)", "Unicode (targets do not repeat across coders)"] %>
   		      </div>	
   		    </div>
   		  <% end %>

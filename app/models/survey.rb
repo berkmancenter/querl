@@ -13,9 +13,9 @@ class Survey < ActiveRecord::Base
     locked_target = self.target_pools.where(:user_id => user.id, :completed => false)
     self.target_pools.where(:locked => true, :completed => false).collect {|pool| all_locked << pool.target_id }
     
-    if behavior == "Sequential Distinct"
+    if behavior == "Unicode"
       self.target_pools.where(:locked => true).collect {|pool| completed_targets << pool.target_id }
-    elsif behavior == "Sequential"
+    elsif behavior == "Multicode"
       self.target_pools.where(:user_id => user.id, :locked => true).collect {|pool| completed_targets << pool.target_id }
     end  
     
