@@ -2,7 +2,9 @@
 
 <h1><%= @project.name %>: <%= @survey.name %></h1>
 
-<% if @project.get_role(current_user) == 'owner' && !@owner_code %>		
+<% if @project.get_role(current_user) == 'owner' && !@owner_code %>	
+<br />	
+<p><%= link_to 'Rename Survey', edit_survey_path(@survey, :project_id => @project.id) %></p>
 <div class="col-lg-12">
   <h2>Current Survey Items</h2>
   <p>Survey Items that are included in this Survey.</p>

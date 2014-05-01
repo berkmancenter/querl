@@ -2,7 +2,9 @@
 
 <h1><%= @project.name %>: <%= @target_list.name %></h1>
 
-<% if @project.get_role(current_user) == 'owner' %>		
+<% if @project.get_role(current_user) == 'owner' %>
+<br />
+<p><%= link_to('Rename Target List', edit_target_list_path(@target_list, :project_id => @project.id), :class => "action-edit") %></p>
 <div class="col-lg-6">
   <h2>Batch Upload</h2>
   <p>Upload a CSV of Targets</p>
