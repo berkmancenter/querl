@@ -2,23 +2,26 @@
 
 <h1><%= @project.name %>: <%= @target_list.name %></h1>
 
-<% if @project.get_role(current_user) == 'owner' %>		
+<% if @project.get_role(current_user) == 'owner' %>
+<br />
+<p><%= link_to('Rename Target List', edit_target_list_path(@target_list, :project_id => @project.id), :class => "action-edit") %></p>
 <div class="col-lg-6">
   <h2>Batch Upload</h2>
   <p>Upload a CSV of Targets</p>
   <p>
     These are the fields to be populated:
 	<ul>
-	  <li>Name (no spaces or special characters, *required)</li>
-	  <li>Display Text</li>
-	  <li>Description</li>
-	  <li>Link Text (*required)</li>
+	  <li>Name: header column as 'name' (no spaces or special characters, *required)</li>
+	  <li>Display Text: header column as 'display_text'</li>
+	  <li>Description: header column as 'description'</li>
+	  <li>Link Text: header column as 'link_text' (*required)</li>
 	</ul>
   </p>
   <p>
 	  This is what the header row of your CSV file might look like:<br /><br />
 	  <code>name,display_text,link_text,description</code>
   </p>
+  <p>You do not need to include columns for non-required fields that you are not using.</p>
   <%= form_tag import_targets_path, :multipart => true, :class => "form-horizontal" do %>
     <fieldset>
       <legend>Targets for <%= @target_list.name %></legend>
@@ -26,7 +29,7 @@
   		<div class="form-group"> 
   		  <label for="name" class="col-lg-2 control-label">File</label>
   		  <div class="col-lg-10">
-  		    <%= file_field 'upload', 'datafile', :class => "form-control" %>
+  		    <%= file_field 'upload', 'datafile', :class => "form-control", accept: 'text/csv' %>
   		  </div>	
   		</div>
   		<%= submit_tag "Upload", :disable_with => 'Uploading...', :class => "btn btn-primary" %>
