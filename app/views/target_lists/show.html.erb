@@ -26,7 +26,7 @@
   		<div class="form-group"> 
   		  <label for="name" class="col-lg-2 control-label">File</label>
   		  <div class="col-lg-10">
-  		    <%= file_field 'upload', 'datafile', :class => "form-control" %>
+  		    <%= file_field 'upload', 'datafile', :class => "form-control", accept: 'text/csv' %>
   		  </div>	
   		</div>
   		<%= submit_tag "Upload", :disable_with => 'Uploading...', :class => "btn btn-primary" %>
