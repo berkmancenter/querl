@@ -13,6 +13,9 @@ class SurveysController < ApplicationController
     @owner_code = params[:owner_code]
 
     if @project.get_role(current_user) == 'coder' || @owner_code
+      if @survey.target_list.nil? || @survey.target_list.blank?
+        redirect_to project_url(@project), notice: 'No Target List Set!' and return
+      end  
       @next_target = @survey.next_target(current_user)
       if @next_target.blank?
         redirect_to project_url(@project), notice: 'Coding is Complete!'
@@ -124,6 +127,12 @@ class SurveysController < ApplicationController
         if value["response_text"].class == Array
           value["response_text"] = value["response_text"].reject! { |r| r.empty? }.join(", ")
         end
+        if SurveyItem.find(value["survey_item_id"].to_i).field_type == "Date"
+          value['response_text'] = Date.new(value['response_text(1i)'].to_i, value['response_text(2i)'].to_i, value['response_text(3i)'].to_i).to_s
+          value.delete('response_text(1i)')
+          value.delete('response_text(2i)')
+          value.delete('response_text(3i)')
+        end
         response = Response.create(value)
       end 
       pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true})
@@ -135,13 +144,19 @@ class SurveysController < ApplicationController
       if @next_target.blank?
         redirect_to project_url(@project), notice: 'Response was successfully recorded. Coding is Complete!'
       else
-        redirect_to survey_url(@survey.id), notice: 'Response was successfully recorded.'
+        if @project.get_role(current_user) == 'owner'
+          redirect_to survey_url(@survey.id, :owner_code => true), notice: 'Response was successfully recorded.'
+        else  
+          redirect_to survey_url(@survey.id), notice: 'Response was successfully recorded.'
+        end  
       end
     else
-      p "gather response"
       @gather_response = params[:answers]
-      p @gather_response
-      redirect_to survey_url(@survey.id, :answers => @gather_response), alert: message
+      if @project.get_role(current_user) == 'owner'
+        redirect_to survey_url(@survey.id, :owner_code => true, :answers => @gather_response), alert: message
+      else 
+        redirect_to survey_url(@survey.id, :answers => @gather_response), alert: message
+      end
       #format.html { render action: "show" }
       #format.json { render json: @survey.errors, status: :unprocessable_entity }
     end
