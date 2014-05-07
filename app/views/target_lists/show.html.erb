@@ -55,7 +55,7 @@
 		<td><%= item.display_text %></td>
 		<td><%= item.link_text %></td>
 		<td><%= item.description %></td>
-		<td><%= link_to('Delete', target_path(item), :confirm => "Are you sure?", :method => :delete) %></td>
+		<td><%= link_to('Delete', target_path(item), :confirm => "Are you sure? This action cannot be undone.", :method => :delete) %></td>
 	  </tr>
 	  <% end %>
     </table>

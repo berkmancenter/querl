@@ -73,6 +73,15 @@ class SurveysController < ApplicationController
              i +=1
              pos +=1
           end 
+          sorted = SurveyItemsSurveys.all(:conditions => {:survey_id => @survey.id}).sort_by { |hsh| hsh[:position] }
+          j = 0
+          pj = 1
+          while j < sorted.length  do
+             sorted[j].position = pj
+             sorted[j].save
+             j +=1
+             pj +=1
+          end  
         end
         unless params[:survey_id].nil?
           format.html { redirect_to survey_url(Survey.find(params[:id].to_i)), notice: 'Survey was successfully updated.' }
