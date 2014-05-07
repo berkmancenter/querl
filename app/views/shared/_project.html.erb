@@ -8,7 +8,7 @@
 	  <tr>
 	    <td><%= project.name %></td>
 		<% if project.get_role(current_user) == 'owner' %>
-	      <td><%= link_to 'Show Users', show_users_projects_path(:id => project.id) %> | <%= link_to 'View Surveys', project_path(project) %> | <%= link_to 'Rename', edit_project_path(project) %> | <%= link_to('Delete', project_path(project), :confirm => "Are you sure?", :method => :delete) %></td>
+	      <td><%= link_to 'Show Users', show_users_projects_path(:id => project.id) %> | <%= link_to 'View Surveys', project_path(project) %> | <%= link_to 'Rename', edit_project_path(project) %> | <%= link_to('Delete', project_path(project), :confirm => "Are you sure? This action cannot be undone.", :method => :delete) %></td>
 		<% elsif project.get_role(current_user) == 'coder' %>
 		  <td><%= link_to 'View Surveys', project_path(project) %></td>
 		<% else %>
