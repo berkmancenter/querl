@@ -21,7 +21,7 @@ class SurveyItemsController < ApplicationController
   
   def edit
     @project = @survey_item.project
-    #@survey_item = SurveyItem.find(params[:id])
+    @surveys_used = @survey_item.surveys
   end
   
   def create
@@ -40,6 +40,7 @@ class SurveyItemsController < ApplicationController
   
   def update
     @survey_item = SurveyItem.find(params[:id])
+    @surveys_used = @survey_item.surveys
     @project = @survey_item.project
     respond_to do |format|
       if @survey_item.update_attributes(params[:survey_item])
