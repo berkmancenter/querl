@@ -1,6 +1,6 @@
 <%= semantic_form_for @survey_item, :html => { :class => "form-horizontal"} do |f| %>
   <fieldset>
-    <legend>New Survey Item</legend>	    
+    <legend>Survey Item</legend>	    
 		<%= f.inputs do %>
 		  <%= f.input :project_id, :as => :hidden, :input_html => { :value => @project.id} %>
 		  <div class="form-group"> 
