@@ -23,6 +23,8 @@ class SurveysController < ApplicationController
     end  
     unless params[:answers].nil?
       @gather_response = params[:answers]
+      p "gather response"
+      p @gather_response
     end
     
     unless params[:gather_response].nil?
