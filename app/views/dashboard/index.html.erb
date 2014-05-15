@@ -4,16 +4,17 @@
 
 <div class="col-lg-6">
   <h2>Your Projects</h2>
+  <p><%= link_to "Add New Project", new_project_path %></p>
   <% unless @your_projects.nil? %>
     <%= render :partial => 'shared/project', :locals => {:projects => @your_projects} %>	
   <% else %>
     <h3>No projects yet.</h3>
   <% end %>
-  <p><%= link_to "Add New Project", new_project_path %></p>
 </div>
 
 <div class="col-lg-6">
   <h2>All Projects</h2>
+  <p><%= link_to "Add New Project", new_project_path %></p>
   <% unless @all_projects.nil? %>
     <%= render :partial => 'shared/project', :locals => {:projects => @all_projects} %>	
   <% else %>
