@@ -23,7 +23,7 @@ class TargetListsController < ApplicationController
     @target_list = TargetList.new(target_list_params)
     respond_to do |format|
       if @target_list.save
-        format.html { redirect_to project_url(@target_list.project), notice: 'Target List was successfully created.' }
+        format.html { redirect_to target_list_url(@target_list), notice: 'Target List was successfully created.' }
         format.json { render json: @target_list, status: :created, author: @target_list }
       else
         format.html { render action: "new" }
