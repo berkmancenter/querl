@@ -27,10 +27,12 @@ class Survey < ActiveRecord::Base
     else  
       self.target_list.targets.each do |target|
         unless completed_targets.include?(target.id) || (!all_locked.nil? && all_locked.include?(target.id))
-          TargetPool.create(:user_id => user.id, :target_id => target.id, :survey_id => self.id, :locked => true, :completed => false)
           nxttar = target
         end  
       end
+      unless nxttar == ""
+        TargetPool.create(:user_id => user.id, :target_id => nxttar.id, :survey_id => self.id, :locked => true, :completed => false)
+      end  
       return nxttar  
     end  
   end 
