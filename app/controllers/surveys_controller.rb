@@ -138,7 +138,7 @@ class SurveysController < ApplicationController
         if value["response_text"].class == Array
           value["response_text"] = value["response_text"].reject! { |r| r.empty? }.join(", ")
         end
-        if SurveyItem.find(value["survey_item_id"].to_i).field_type == "Date"
+        if SurveyItem.find(value["survey_item_id"].to_i).field_type == "Date" && (!value['response_text'].nil? || !value['response_text'].blank?)
           value['response_text'] = Date.new(value['response_text(1i)'].to_i, value['response_text(2i)'].to_i, value['response_text(3i)'].to_i).to_s
           value.delete('response_text(1i)')
           value.delete('response_text(2i)')
