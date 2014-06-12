@@ -55,10 +55,11 @@ class SurveyItemsController < ApplicationController
   
   def destroy
     @survey_item = SurveyItem.find(params[:id])
+    project = @survey_item.project
     @survey_item.destroy
     
     respond_to do |format|
-      format.html { redirect_to root_url }
+      format.html { redirect_to project_url(project) }
       format.json { head :no_content }
     end
   end
