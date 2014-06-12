@@ -16,6 +16,9 @@ class SurveysController < ApplicationController
       if @survey.target_list.nil? || @survey.target_list.blank?
         redirect_to project_url(@project), notice: 'No Target List Set!' and return
       end  
+      if @survey.behavior.nil? || @survey.behavior.blank?
+        redirect_to project_url(@project), notice: 'No Target Behavior Set!' and return
+      end
       @next_target = @survey.next_target(current_user)
       if @next_target.blank?
         redirect_to project_url(@project), notice: 'Coding is Complete!'
@@ -121,14 +124,26 @@ class SurveysController < ApplicationController
     @survey.survey_items.where(:required => true).collect{|item| @required_items << item.id}
     
     req_error = false
-    message = ''
     params[:answers].each_value do |value|
       if @required_items.include?(value["survey_item_id"].to_i)
-        if value["response_text"].blank?
+        if SurveyItem.find(value["survey_item_id"].to_i).field_type == "Date"
+          if value['response_text(1i)'].nil? || value['response_text(1i)'].blank?
+            p "REQUIRED ERROR!"
+            @next_target = Target.find(value["target_id"].to_i)
+            req_error = true
+          elsif value['response_text(2i)'].nil? || value['response_text(2i)'].blank?
+            p "REQUIRED ERROR!"
+            @next_target = Target.find(value["target_id"].to_i)
+            req_error = true
+          elsif value['response_text(3i)'].nil? || value['response_text(3i)'].blank?
+            p "REQUIRED ERROR!"
+            @next_target = Target.find(value["target_id"].to_i)
+            req_error = true
+          end      
+        elsif value["response_text"].blank?
           p "REQUIRED ERROR!"
           @next_target = Target.find(value["target_id"].to_i)
           req_error = true
-          message = "Please enter required fields that are marked with *."
         end 
       end 
     end  
@@ -137,21 +152,25 @@ class SurveysController < ApplicationController
       params[:answers].each_value do |value|
         if value["response_text"].class == Array
           value["response_text"] = value["response_text"].reject! { |r| r.empty? }.join(", ")
+          response = Response.create(value)
         end
-        if SurveyItem.find(value["survey_item_id"].to_i).field_type == "Date" && (!value['response_text'].nil? || !value['response_text'].blank?)
+        
+        if SurveyItem.find(value["survey_item_id"].to_i).field_type == "Date" && ((!value['response_text(1i)'].nil? && !value['response_text(1i)'].blank?) && (!value['response_text(2i)'].nil? && !value['response_text(2i)'].blank?) && (!value['response_text(3i)'].nil? && !value['response_text(3i)'].blank?))
           value['response_text'] = Date.new(value['response_text(1i)'].to_i, value['response_text(2i)'].to_i, value['response_text(3i)'].to_i).to_s
           value.delete('response_text(1i)')
           value.delete('response_text(2i)')
           value.delete('response_text(3i)')
+          response = Response.create(value)
         end
-        response = Response.create(value)
       end 
-      pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true})
+      pool = TargetPool.first(:conditions => {:target_id => params[:target_id], :survey_id => @survey.id, :user_id => current_user.id, :locked => true, :completed => false})
       pool.completed = true
       pool.save
       params[:gather_response] = nil
     
       @next_target = @survey.next_target(current_user)
+      p "next target"
+      p @next_target
       if @next_target.blank?
         redirect_to project_url(@project), notice: 'Response was successfully recorded. Coding is Complete!'
       else
@@ -164,9 +183,9 @@ class SurveysController < ApplicationController
     else
       @gather_response = params[:answers]
       if @project.get_role(current_user) == 'owner'
-        redirect_to survey_url(@survey.id, :owner_code => true, :answers => @gather_response), alert: message
+        redirect_to survey_url(@survey.id, :owner_code => true, :answers => @gather_response), alert: "Please enter required fields that are marked with *."
       else 
-        redirect_to survey_url(@survey.id, :answers => @gather_response), alert: message
+        redirect_to survey_url(@survey.id, :answers => @gather_response), alert: "Please enter required fields that are marked with *."
       end
       #format.html { render action: "show" }
       #format.json { render json: @survey.errors, status: :unprocessable_entity }
