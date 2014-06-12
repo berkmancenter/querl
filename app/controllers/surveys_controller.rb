@@ -14,10 +14,10 @@ class SurveysController < ApplicationController
 
     if @project.get_role(current_user) == 'coder' || @owner_code
       if @survey.target_list.nil? || @survey.target_list.blank?
-        redirect_to project_url(@project), notice: 'No Target List Set!' and return
+        redirect_to project_url(@project), alert: 'No Target List Set!' and return
       end  
       if @survey.behavior.nil? || @survey.behavior.blank?
-        redirect_to project_url(@project), notice: 'No Target Behavior Set!' and return
+        redirect_to project_url(@project), alert: 'No Target Behavior Set!' and return
       end
       @next_target = @survey.next_target(current_user)
       if @next_target.blank?

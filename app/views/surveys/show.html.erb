@@ -113,7 +113,7 @@
 				    <% unless item.field_options.nil? %>
 					  <% new_collection = Array.new %>
 					  <% item.field_options.split(',').each do |option| %>
-					    <% if !@gather_response.nil? && @gather_response["#{item.field_name}"]["response_text"].include?(option) %>
+					    <% if !@gather_response.nil? && !@gather_response["#{item.field_name}"]["response_text"].nil? && @gather_response["#{item.field_name}"]["response_text"].include?(option) %>
 						  <% if item.formtastic_field_map == "select" %>
 						    <% new_collection << ["#{option}", "#{option}", {:selected => "selected"}] %>
 						  <% else %>	
