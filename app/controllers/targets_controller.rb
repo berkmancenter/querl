@@ -65,7 +65,8 @@ class TargetsController < ApplicationController
       redirect_to :back and return
     end
       
-    CSV.parse(@file.read, {:headers => true}).each do |cell|
+    CSV.parse(@file.read, {:headers => true, :header_converters=> lambda {|f| f.strip},
+   :converters=> lambda {|f| f ? f.strip : nil}}).each do |cell|
         
         target={}
         
