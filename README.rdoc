@@ -1,8 +1,72 @@
-== README
+qUeRL
+============
 
-This application is licensed under the GPL, version 3.
+Description
+-----------
 
-Ruby 2.0.0
-Rails 4.0.1
-Postgres DB
+qUeRL is a custom built survey tool.
+
+Code Repository
+---------------
+
+https://github.com/berkmancenter/querl
+
+User Documentation
+------------------
+
+We're in the process of finalizing user documentation, but once it's up this will get updated with a pointer to it.
+
+Requirements
+------------
+
+* Ruby 1.9.2 and a bunch of gems included in the Gemfile
+* Rails 4.0.2
+* A modern postgres database server.
+* A webserver capable of interfacing with Rails applications. Ideally, apache or nginx with mod_passenger installed.
+* Linux or OSX. Linux would be easier.
+
+Setup
+-----
+
+* Install requirements (see above)
+* Checkout the code
+  * `git clone https://github.com/berkmancenter/querl`
+* Install libraries
+  * `bundle install`
+* Configure the database
+  * `cp config/database.yml.example config/database.yml`
+  * Setup a postgres user and update `config/database.yml` accordingly
+  * `rake db:create`
+  * `rake db:setup`
+  * `rake db:migrate`
+
+Issue Tracker
+-------------
+
+We maintain a closed-to-the-public [issue tracker] (https://cyber.law.harvard.edu/projectmanagement/projects/querl/issues). Any additional issues can be added to the [GitHub issue tracker](https://github.com/berkmancenter/querl/issues).
+
+To Do
+-----
+
+The current to do items can be found within the [issue tracker] (https://cyber.law.harvard.edu/projectmanagement/projects/querl/issues).
+
+### Technologies
+
+* [Rails](http://rubyonrails.org/)
+* [Redmine](http://www.redmine.org)
+
+Contributors
+------------
+
+[Anita Patel] (https://github.com/apatel)
+
+License
+-------
+
+This application is open source and released under the terms of the GNU General Public License v3 (GPL).
+
+Copyright
+---------
+
+Copyright &copy; 2015 President and Fellows of Harvard College
 
